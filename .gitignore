@@ -32,15 +32,11 @@ Desktop.ini
 *.swo
 
 # Scripts
-update_site.bat
+update_site.sh
 deploy.sh
-test_upload.js
-debug_github.js
-push_to_github.sh
 start_local.sh
 
 # Documentation & Obsidian
-*.md
 JefeCali_Obsidian/
 
 # Specific Local Files
