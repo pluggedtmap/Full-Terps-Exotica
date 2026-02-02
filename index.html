@@ -2461,7 +2461,7 @@
                 if (selectedShipping === 'shipping' && !selectedCarrier) return showToast("Option de livraison manquante", "error");
 
                 // Auto-capture & Validate if not saved yet
-                if (!userInfo) {
+                if (!userInfo || !userInfo.pseudo) {
                     const pseudo = document.getElementById('input-pseudo').value.trim();
                     const nom = document.getElementById('input-nom').value.trim();
                     const prenom = document.getElementById('input-prenom').value.trim();
@@ -2493,7 +2493,7 @@
                 // Pour Meetup, on peut demander juste un pseudo si pas encore set, ou rien.
                 // Le client demande de ne PAS demander les infos.
                 // On check juste si on a un pseudo via Telegram, sinon on met "Anonyme" ou on laisse vide.
-                if (!userInfo) {
+                if (!userInfo || !userInfo.pseudo) {
                     let pseudo = document.getElementById('input-pseudo').value.trim();
                     if (pseudo.length < 2) pseudo = "Client Meetup";
                     userInfo = { pseudo: pseudo, nom: "", prenom: "", adresse: "Meetup", ville: "", zip: "", whatsapp: "", email: "" };
