@@ -171,9 +171,13 @@ function loadData() {
     if (fs.existsSync(USERS_FILE)) {
         try {
             data.users = JSON.parse(fs.readFileSync(USERS_FILE, 'utf8'));
+            console.log(`[STARTUP] Loaded ${Object.keys(data.users).length} users from users.json`);
         } catch (e) {
             data.users = {};
+            console.error("[STARTUP] Error loading users.json:", e);
         }
+    } else {
+        console.log("[STARTUP] No users.json found, starting empty.");
     }
 
     // Structure Integrity
