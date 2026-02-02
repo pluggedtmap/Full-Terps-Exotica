@@ -396,14 +396,44 @@ app.post('/api/orders', (req, res) => {
     orderData.status = 'pending';
 
     // Link to Telegram User & Loyalty Support
-    if (telegramUser) {
-        orderData.telegramUserId = telegramUser.id;
-        orderData.telegramUsername = telegramUser.username;
+    // Link to Telegram User & Loyalty Support
+    let userId = null;
+    let username = null;
 
+    if (telegramUser) {
+        userId = telegramUser.id;
+        username = telegramUser.username;
+        orderData.telegramUserId = userId;
+        orderData.telegramUsername = username;
+    } else if (orderData.userInfo && orderData.userInfo.pseudo) {
+        // Fallback: Create ID from Pseudo for Web Users
+        const safePseudo = orderData.userInfo.pseudo.trim();
+        // Create a consistent ID: pseudo_lowercase (remove special chars)
+        userId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+        username = safePseudo;
+        orderData.telegramUsername = safePseudo + " (Web)";
+    }
+
+    if (userId) {
         // Loyalty Logic: +1 Point
-        if (!db.users[telegramUser.id]) db.users[telegramUser.id] = { points: 0, rewards: [], totalSpent: 0 };
-        db.users[telegramUser.id].points = (db.users[telegramUser.id].points || 0) + 1;
-        db.users[telegramUser.id].totalSpent = (db.users[telegramUser.id].totalSpent || 0) + (orderData.total || 0);
+        if (!db.users[userId]) {
+            db.users[userId] = {
+                points: 0,
+                rewards: [],
+                totalSpent: 0,
+                username: username,
+                first_name: orderData.userInfo.prenom || "", // Use real name if avail
+                joinedAt: new Date().toISOString()
+            };
+        }
+        db.users[userId].points = (db.users[userId].points || 0) + 1;
+        db.users[userId].totalSpent = (db.users[userId].totalSpent || 0) + (orderData.total || 0);
+
+        // Update user info if provided (for both new and existing)
+        if (orderData.userInfo) {
+            if (orderData.userInfo.prenom) db.users[userId].first_name = orderData.userInfo.prenom;
+            if (username) db.users[userId].username = username;
+        }
     }
 
     db.orders.push(orderData);
