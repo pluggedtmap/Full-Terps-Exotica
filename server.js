@@ -318,13 +318,26 @@ app.delete('/api/products/:id', verifyAdmin, (req, res) => {
 // Get Loyalty Info
 app.get('/api/loyalty', (req, res) => {
     const initData = req.headers['x-telegram-init-data'];
-    if (!initData) return res.status(401).json({ success: false, message: "Non authentifié" });
+    let userId = null;
 
-    const user = verifyTelegramWebAppData(initData);
-    if (!user) return res.status(403).json({ success: false, message: "Signature invalide" });
+    if (initData) {
+        const user = verifyTelegramWebAppData(initData);
+        if (user) userId = user.id;
+    }
+
+    if (!userId) {
+        // Fallback for Web Users
+        const pseudo = req.headers['x-pseudo'];
+        if (pseudo) {
+            // Reconstruct the synthetic ID
+            userId = `pseudo_${pseudo.trim().toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+        }
+    }
+
+    if (!userId) return res.status(401).json({ success: false, message: "Non authentifié" });
 
     const db = loadData();
-    const userData = db.users[user.id] || { points: 0, rewards: [] };
+    const userData = db.users[userId] || { points: 0, rewards: [] };
 
     res.json({ success: true, points: userData.points, rewards: userData.rewards || [] });
 });

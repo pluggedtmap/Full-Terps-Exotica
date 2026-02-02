@@ -2614,6 +2614,11 @@
                     createdAt: new Date().toISOString()
                 };
 
+                // Persist Pseudo for Loyalty Fallback
+                if (userInfo && userInfo.pseudo) {
+                    localStorage.setItem('userPseudo', userInfo.pseudo);
+                }
+
                 const headers = { 'Content-Type': 'application/json' };
                 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
                     headers['x-telegram-init-data'] = window.Telegram.WebApp.initData;
@@ -2821,23 +2826,8 @@
             };
 
             // --- LOYALTY LOGIC ---
-            function initLoyalty() {
-                if (window.Telegram && window.Telegram.WebApp) {
-                    const initData = window.Telegram.WebApp.initData;
-                    if (!initData) return; // Not in Telegram
-
-                    fetch('/api/loyalty', {
-                        headers: { 'x-telegram-init-data': initData }
-                    })
-                        .then(res => res.json())
-                        .then(data => {
-                            if (data.success) {
-                                updateLoyaltyUI(data.points, data.rewards);
-                            }
-                        })
-                        .catch(err => console.error("Loyalty Error", err));
-                }
-            }
+            // --- LOYALTY LOGIC ---
+            // initLoyalty is defined later with full logic
 
             function updateLoyaltyUI(points, rewards) {
                 const maxPoints = 5;
@@ -3038,18 +3028,23 @@
             }
 
             // Only run if in Telegram WebApp
-            if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) {
-                console.log('Loyalty: Not in Telegram WebApp, skipping user data');
-                // Still update UI with config even if not in Telegram
+            // Check Telegram or Local Storage
+            const initData = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp.initData : null;
+            const storedPseudo = localStorage.getItem('userPseudo');
+
+            if (!initData && !storedPseudo) {
+                console.log('Loyalty: No auth data found');
                 updateLoyaltyUI(0, []);
                 return;
             }
 
             try {
+                const headers = {};
+                if (initData) headers['x-telegram-init-data'] = initData;
+                if (storedPseudo) headers['x-pseudo'] = storedPseudo;
+
                 const res = await fetch('/api/loyalty', {
-                    headers: {
-                        'x-telegram-init-data': window.Telegram.WebApp.initData
-                    }
+                    headers: headers
                 });
                 const json = await res.json();
                 if (json.success) {
