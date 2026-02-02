@@ -3098,8 +3098,10 @@
                 console.log('[LOYALTY] Telegram Username detected:', telegramUsername);
 
                 // Use Telegram username as pseudo if available (for unified lookup)
+                // IMPORTANT: Remove @ if present for consistent lookup
                 if (telegramUsername) {
-                    storedPseudo = telegramUsername;
+                    storedPseudo = telegramUsername.replace('@', '');
+                    console.log('[LOYALTY] Using pseudo for lookup:', storedPseudo);
                 }
             }
 
