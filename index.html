@@ -3097,7 +3097,8 @@
         // initHeaderCarousel removed in favor of 3D Banner
 
         // ===== LOYALTY SYSTEM =====
-        let userLoyaltyData = { points: 0, rewards: [] };
+        // GLOBAL loyalty data - use window scope for cross-function access
+        window.userLoyaltyData = { points: 0, rewards: [] };
         let loyaltyConfig = { pointsPerReward: 5, maxPoints: 20, rewardsDescription: '' };
 
         async function initLoyalty() {
@@ -3155,14 +3156,14 @@
                 console.log('Loyalty Updated:', json);
 
                 if (json.success) {
-                    userLoyaltyData = { points: json.points || 0, rewards: json.rewards || [] };
+                    window.userLoyaltyData = { points: json.points || 0, rewards: json.rewards || [] };
 
                     // DEBUG VISIBLE: Show toast with points received
                     if (typeof showToast === 'function') {
-                        showToast(`🎯 ${userLoyaltyData.points} points chargés`, "success");
+                        showToast(`🎯 ${window.userLoyaltyData.points} points chargés`, "success");
                     }
 
-                    updateLoyaltyUI(userLoyaltyData.points, userLoyaltyData.rewards);
+                    updateLoyaltyUI(window.userLoyaltyData.points, window.userLoyaltyData.rewards);
                 } else {
                     console.warn('Loyalty Fetch Failed:', json.message);
                     if (typeof showToast === 'function') {
