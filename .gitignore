@@ -37,6 +37,10 @@ deploy.sh
 start_local.sh
 
 # Documentation & Obsidian
+*.md
+Jefe cali explain.md
+PROJET_DOCUMENTATION.md
+code jefecali.md
 JefeCali_Obsidian/
 
 # Specific Local Files
