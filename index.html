@@ -3072,6 +3072,9 @@
         let loyaltyConfig = { pointsPerReward: 5, maxPoints: 20, rewardsDescription: '' };
 
         async function initLoyalty() {
+            // DEBUG VISUEL
+            // showToast("🔄 Chargement fidélité...", "info"); // Commented out to reduce noise, enable if needed
+
             // Load loyalty config first (public endpoint, no auth needed)
             try {
                 const configRes = await fetch('/api/loyalty/config');
@@ -3104,9 +3107,14 @@
                 });
                 const json = await res.json();
                 console.log('Loyalty Updated:', json);
+
                 if (json.success) {
                     userLoyaltyData = { points: json.points || 0, rewards: json.rewards || [] };
                     updateLoyaltyUI(userLoyaltyData.points, userLoyaltyData.rewards);
+                    // DEBUG: Confirm update to user
+                    // showToast(`Fidélité à jour : ${userLoyaltyData.points} points`, "success");
+                } else {
+                    console.warn('Loyalty Fetch Failed:', json.message);
                 }
             } catch (e) {
                 console.error('Loyalty fetch error:', e);
