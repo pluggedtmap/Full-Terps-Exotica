@@ -10,6 +10,7 @@ const multer = require('multer');
 
 const app = express();
 app.disable('x-powered-by'); // Security hardening
+app.set('trust proxy', 1); // Trust first, necessary for Cloudflare/Nginx
 const PORT = process.env.PORT || 3002;
 const DATA_FILE = path.join(__dirname, 'data.json');
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
