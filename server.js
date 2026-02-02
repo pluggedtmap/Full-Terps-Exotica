@@ -11,7 +11,7 @@ const multer = require('multer');
 const app = express();
 app.disable('x-powered-by'); // Security hardening
 app.set('trust proxy', 1); // Trust first, necessary for Cloudflare/Nginx
-const PORT = process.env.PORT || 3002;
+const PORT = process.env.PORT || 4005;
 const DATA_FILE = path.join(__dirname, 'data.json');
 const ORDERS_FILE = path.join(__dirname, 'orders.json');
 
@@ -30,7 +30,7 @@ const https = require('https'); // For GitHub API calls
 // --- SECURITE & MIDDLEWARE ---
 app.use(helmet({ contentSecurityPolicy: false }));
 // Manual headers removed in favor of Helmet
-const allowedOrigins = ['https://bigclouds.shop', 'https://www.bigclouds.shop', 'https://hashfiltered420.cloud', 'https://www.hashfiltered420.cloud', 'http://localhost:3000', 'http://localhost:3002', 'https://bigclouds.com'];
+const allowedOrigins = ['https://bigclouds.shop', 'https://www.bigclouds.shop', 'https://hashfiltered420.cloud', 'https://www.hashfiltered420.cloud', 'http://localhost:3000', 'http://localhost:4005', 'https://bigclouds.com'];
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
