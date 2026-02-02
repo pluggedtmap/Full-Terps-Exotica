@@ -385,6 +385,35 @@ app.get('/api/loyalty', (req, res) => {
         }
     }
 
+    // REFERRAL HANDLING
+    const referralCode = req.headers['x-referral'];
+    if (referralCode && userId) {
+        // Construct referrer ID (assuming referralCode is pseudo/username)
+        // referralCode comes from 'ref_username' so it is the username
+        const referrerId = `pseudo_${referralCode.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+
+        // Ensure user exists in DB to save referral data
+        if (!db.users[userId]) {
+            db.users[userId] = { points: 0, rewards: [], first_name: "New User", joinedAt: new Date().toISOString() };
+        }
+
+        // Only link if:
+        // 1. Not self-referral
+        // 2. User has no referrer yet
+        // 3. Referrer exists in DB
+        if (referrerId !== userId && !db.users[userId].referredBy) {
+            if (db.users[referrerId]) {
+                db.users[userId].referredBy = referrerId;
+                console.log(`[REFERRAL] User ${userId} linked to referrer ${referrerId}`);
+                saveData(db);
+                // Notification (Log)
+                console.log(`[REFERRAL] Success: ${userId} -> ${referrerId}`);
+            } else {
+                console.log(`[REFERRAL] Referrer ${referrerId} not found`);
+            }
+        }
+    }
+
     console.log(`[LOYALTY] Final response: ${finalPoints} points`);
     res.json({ success: true, points: finalPoints, rewards: finalRewards });
 });
@@ -493,10 +522,22 @@ app.post('/api/orders', (req, res) => {
                 joinedAt: new Date().toISOString()
             };
         }
-        db.users[loyaltyKey].points = (db.users[loyaltyKey].points || 0) + 1;
-        db.users[loyaltyKey].totalSpent = (db.users[loyaltyKey].totalSpent || 0) + (orderData.total || 0);
+        // Check for Referral Bonus (Condition: First Order)
+        const user = db.users[loyaltyKey];
+        if (user.referredBy && !user.hasOrdered) {
+            const referrerId = user.referredBy;
+            if (db.users[referrerId]) {
+                db.users[referrerId].points = (db.users[referrerId].points || 0) + 1;
+                console.log(`[REFERRAL] +1 point for referrer ${referrerId} (filleul: ${loyaltyKey})`);
+            }
+        }
 
-        console.log(`[LOYALTY] +1 point for ${loyaltyKey}. Total: ${db.users[loyaltyKey].points}`);
+        // Update User Stats
+        user.points = (user.points || 0) + 1;
+        user.totalSpent = (user.totalSpent || 0) + (orderData.total || 0);
+        user.hasOrdered = true; // Mark as having ordered
+
+        console.log(`[LOYALTY] +1 point for ${loyaltyKey}. Total: ${user.points}`);
     } else {
         console.log("[LOYALTY] No points added - user not authenticated via Telegram");
     }

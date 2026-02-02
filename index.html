@@ -3173,10 +3173,21 @@
             }
 
             try {
+                // CHECK REFERRAL PARAM (startapp param)
+                let referralCode = null;
+                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
+                    const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
+                    if (startParam && startParam.startsWith('ref_')) {
+                        referralCode = startParam.replace('ref_', '');
+                        console.log('[LOYALTY] Referral Detected:', referralCode);
+                    }
+                }
+
                 const headers = {};
                 if (initData) headers['x-telegram-init-data'] = initData;
                 // ALWAYS send pseudo (Telegram username OR stored pseudo) for unified lookup
                 if (storedPseudo) headers['x-pseudo'] = storedPseudo;
+                if (referralCode) headers['x-referral'] = referralCode;
 
                 console.log('[LOYALTY] Fetching with headers:', { hasInitData: !!initData, pseudo: storedPseudo });
 
@@ -3199,12 +3210,17 @@
                     // REFERRAL SETUP
                     const referralDisplay = document.getElementById('referral-link-display');
                     if (referralDisplay) {
+                        // Use Telegram Direct WebApp Link (bypass /start command conflict)
+                        // Format: t.me/BotUsername/AppName?startapp=ref_user
+                        const botUsername = "BigCloudsBot"; // Your bot username
+                        const appName = "app"; // Default app name usually 'app' or 'shop'
+
                         if (telegramUsername) {
-                            const link = `https://t.me/BigCloudsBot?start=ref_${telegramUsername}`;
+                            const link = `https://t.me/${botUsername}/${appName}?startapp=ref_${telegramUsername}`;
                             referralDisplay.textContent = link;
                             window.myReferralLink = link;
                         } else if (storedPseudo) {
-                            const link = `https://t.me/BigCloudsBot?start=ref_${storedPseudo}`;
+                            const link = `https://t.me/${botUsername}/${appName}?startapp=ref_${storedPseudo}`;
                             referralDisplay.textContent = link;
                             window.myReferralLink = link;
                         } else {
