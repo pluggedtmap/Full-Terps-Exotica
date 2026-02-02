@@ -2870,12 +2870,23 @@
                 const maxPoints = 10;
                 const currentPoints = Math.min(points, maxPoints);
 
-                // Text
-                document.getElementById('points-text').textContent = `${currentPoints} / ${maxPoints} Points`;
+                console.log('[UI UPDATE] Updating loyalty UI with', currentPoints, 'points');
+
+                // Text - Update to match HTML structure: "X <span>/ 10</span>"
+                const ptsText = document.getElementById('points-text');
+                if (ptsText) {
+                    ptsText.innerHTML = `${currentPoints} <span class="text-lg text-gray-500">/ ${maxPoints}</span>`;
+                    console.log('[UI UPDATE] Updated points-text to:', currentPoints);
+                } else {
+                    console.error('[UI UPDATE] points-text element NOT FOUND!');
+                }
 
                 // Progress Bar
                 const progress = (currentPoints / maxPoints) * 100;
-                document.getElementById('points-progress').style.width = `${progress}%`;
+                const progressBar = document.getElementById('points-progress');
+                if (progressBar) {
+                    progressBar.style.width = `${progress}%`;
+                }
 
                 // Points Circles
                 for (let i = 1; i <= 10; i++) {
