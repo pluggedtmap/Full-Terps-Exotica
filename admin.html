@@ -788,6 +788,7 @@
             try {
                 const res = await fetch('/api/clients?t=' + Date.now(), { headers: { 'Authorization': adminToken } });
                 const json = await res.json();
+                console.log("Admin Clients Data:", json); // DEBUG LOG
 
                 if (list) {
                     list.innerHTML = '';
