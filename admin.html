@@ -1167,12 +1167,30 @@
             const json = await res.json();
             list.innerHTML = '';
             (json.data || []).forEach(f => {
-                const isImg = f.name.match(/\.(jpg|png|gif|webp)$/i);
-                list.innerHTML += `<div class="aspect-square bg-white/5 rounded-lg overflow-hidden relative group">
-                    ${isImg ? `<img src="${f.raw_url}" class="w-full h-full object-cover">` : '<div class="w-full h-full flex items-center justify-center"><i class="fas fa-file"></i></div>'}
-                    <div class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center p-2 text-center transition-opacity">
-                         <button onclick="copyToClipboard('${f.raw_url}')" class="bg-blue-500 text-white text-[10px] px-2 py-1 rounded mb-1 w-full">Copier</button>
-                         <button onclick="deleteGithubFile('${f.path}','${f.sha}')" class="bg-red-500 text-white text-[10px] px-2 py-1 rounded w-full">Supprimer</button>
+                const isImg = f.name.match(/\.(jpg|png|gif|webp|jpeg)$/i);
+                const isVid = f.name.match(/\.(mp4|webm|mov)$/i);
+
+                let mediaHtml = '<div class="w-full h-full flex items-center justify-center bg-gray-900 text-gray-500"><i class="fas fa-file text-2xl"></i></div>';
+
+                if (isImg) {
+                    mediaHtml = `<img src="${f.raw_url}" class="w-full h-full object-cover">`;
+                } else if (isVid) {
+                    // Start muted, paused. On hover? Or just preview.
+                    // For mobile admin, maybe just an icon overlay.
+                    mediaHtml = `
+                        <video src="${f.raw_url}#t=1" class="w-full h-full object-cover" muted preload="metadata"></video>
+                        <div class="absolute inset-0 flex items-center justify-center pointer-events-none">
+                            <i class="fas fa-play-circle text-3xl text-white/80 drop-shadow-lg"></i>
+                        </div>
+                    `;
+                }
+
+                list.innerHTML += `<div class="aspect-square bg-white/5 rounded-lg overflow-hidden relative group border border-white/10">
+                    ${mediaHtml}
+                    <div class="absolute inset-0 bg-black/80 opacity-0 group-hover:opacity-100 flex flex-col items-center justify-center p-2 text-center transition-opacity z-10 space-y-2">
+                         <span class="text-[10px] text-gray-300 break-all line-clamp-2 px-1">${f.name}</span>
+                         <button onclick="copyToClipboard('${f.raw_url}')" class="bg-blue-600 hover:bg-blue-500 text-white text-xs px-3 py-1.5 rounded-lg w-full font-bold transition">Copier</button>
+                         <button onclick="deleteGithubFile('${f.path}','${f.sha}')" class="bg-red-600 hover:bg-red-500 text-white text-xs px-3 py-1.5 rounded-lg w-full font-bold transition">Supprimer</button>
                     </div>
                 </div>`;
             });

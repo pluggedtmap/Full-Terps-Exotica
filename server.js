@@ -493,56 +493,94 @@ app.post('/api/upload-github', verifyAdmin, uploadMemory.single('file'), (req, r
         res.status(500).json({ success: false, message: "Network Error" });
     });
 
-    request.write(body);
-    request.end();
-});
+    // --- GITHUB FILES LIST ---
+    app.get('/api/github-files', verifyAdmin, (req, res) => {
+        const options = {
+            hostname: 'api.github.com',
+            path: `/repos/${GH_OWNER}/${GH_REPO}/contents/${GH_UPLOAD_DIR}`,
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${GH_TOKEN}`,
+                'User-Agent': 'BigClouds-Server'
+            }
+        };
 
-// --- CLIENTS MANAGEMENT (ADMIN) ---
-app.get('/api/clients', verifyAdmin, (req, res) => {
-    const db = loadData();
-    // Convert users object to array with ID included
-    const clients = Object.entries(db.users || {}).map(([id, data]) => ({
-        id,
-        ...data
-    }));
-    res.json({ success: true, data: clients });
-});
+        const request = https.request(options, (response) => {
+            let data = '';
+            response.on('data', (chunk) => data += chunk);
+            response.on('end', () => {
+                if (response.statusCode === 200) {
+                    try {
+                        const files = JSON.parse(data);
+                        // Filter just to be safe, though not strictly required if only uploads are there
+                        const formattedDetails = files.map(f => ({
+                            name: f.name,
+                            path: f.path,
+                            sha: f.sha,
+                            download_url: f.download_url,
+                            // Trick to get raw URL regardless of structured response
+                            raw_url: f.download_url || `https://raw.githubusercontent.com/${GH_OWNER}/${GH_REPO}/${GH_BRANCH}/${f.path}`
+                        }));
+                        res.json({ success: true, data: formattedDetails });
+                    } catch (e) {
+                        res.status(500).json({ success: false, message: "Parsing Error" });
+                    }
+                } else {
+                    res.status(response.statusCode).json({ success: false, message: "GitHub Fetch Failed" });
+                }
+            });
+        });
 
-app.post('/api/clients/points', verifyAdmin, (req, res) => {
-    const { userId, action, value } = req.body; // action: 'set', 'add', 'reset'
-    const db = loadData();
+        request.on('error', (e) => res.status(500).json({ success: false, message: "Network Error" }));
+        request.end();
+    });
 
-    if (!db.users[userId]) return res.json({ success: false, message: "Utilisateur inconnu" });
+    // --- CLIENTS MANAGEMENT (ADMIN) ---
+    app.get('/api/clients', verifyAdmin, (req, res) => {
+        const db = loadData();
+        // Convert users object to array with ID included
+        const clients = Object.entries(db.users || {}).map(([id, data]) => ({
+            id,
+            ...data
+        }));
+        res.json({ success: true, data: clients });
+    });
 
-    if (action === 'reset') {
-        db.users[userId].points = 0;
-        db.users[userId].rewards = []; // Optional: Clear rewards too?
-    } else if (action === 'set') {
-        db.users[userId].points = parseInt(value) || 0;
-    } else if (action === 'add') {
-        db.users[userId].points = (db.users[userId].points || 0) + (parseInt(value) || 0);
-    }
+    app.post('/api/clients/points', verifyAdmin, (req, res) => {
+        const { userId, action, value } = req.body; // action: 'set', 'add', 'reset'
+        const db = loadData();
 
-    // Cap points to max 10 for the "2 rows of 10 points" visual logic requested?
-    // User asked for "modifier ou augmenter... pour le nombre de point a gagner '2 rangé de 10 point maximum'"
-    // This implies the max might be 20 now? Or just visual?
-    // Let's assume logic allows going up, visual handles display.
-    if (db.users[userId].points < 0) db.users[userId].points = 0;
+        if (!db.users[userId]) return res.json({ success: false, message: "Utilisateur inconnu" });
 
-    saveData(db);
-    res.json({ success: true, points: db.users[userId].points });
-});
+        if (action === 'reset') {
+            db.users[userId].points = 0;
+            db.users[userId].rewards = []; // Optional: Clear rewards too?
+        } else if (action === 'set') {
+            db.users[userId].points = parseInt(value) || 0;
+        } else if (action === 'add') {
+            db.users[userId].points = (db.users[userId].points || 0) + (parseInt(value) || 0);
+        }
 
-// Fallback
-app.get('*', (req, res) => {
-    if (req.accepts('html')) {
-        res.sendFile(path.join(__dirname, 'index.html'));
-    } else {
-        res.status(404).end();
-    }
-});
+        // Cap points to max 10 for the "2 rows of 10 points" visual logic requested?
+        // User asked for "modifier ou augmenter... pour le nombre de point a gagner '2 rangé de 10 point maximum'"
+        // This implies the max might be 20 now? Or just visual?
+        // Let's assume logic allows going up, visual handles display.
+        if (db.users[userId].points < 0) db.users[userId].points = 0;
 
-const server = app.listen(PORT, () => {
-    console.log(`✅ Serveur Big Clouds démarré sur http://localhost:${PORT}`);
-});
-server.setTimeout(10 * 60 * 1000); // 10 minutes timeout for handling large uploads
+        saveData(db);
+        res.json({ success: true, points: db.users[userId].points });
+    });
+
+    // Fallback
+    app.get('*', (req, res) => {
+        if (req.accepts('html')) {
+            res.sendFile(path.join(__dirname, 'index.html'));
+        } else {
+            res.status(404).end();
+        }
+    });
+
+    const server = app.listen(PORT, () => {
+        console.log(`✅ Serveur Big Clouds démarré sur http://localhost:${PORT}`);
+    });
+    server.setTimeout(10 * 60 * 1000); // 10 minutes timeout for handling large uploads
