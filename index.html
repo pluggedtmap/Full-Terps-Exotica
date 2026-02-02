@@ -3138,11 +3138,18 @@
 
                 if (json.success) {
                     userLoyaltyData = { points: json.points || 0, rewards: json.rewards || [] };
+
+                    // DEBUG VISIBLE: Show toast with points received
+                    if (typeof showToast === 'function') {
+                        showToast(`🎯 ${userLoyaltyData.points} points chargés`, "success");
+                    }
+
                     updateLoyaltyUI(userLoyaltyData.points, userLoyaltyData.rewards);
-                    // DEBUG: Confirm update to user
-                    // showToast(`Fidélité à jour : ${userLoyaltyData.points} points`, "success");
                 } else {
                     console.warn('Loyalty Fetch Failed:', json.message);
+                    if (typeof showToast === 'function') {
+                        showToast(`❌ Erreur fidélité: ${json.message}`, "error");
+                    }
                 }
             } catch (e) {
                 console.error('Loyalty fetch error:', e);
