@@ -109,24 +109,52 @@
 <body class="flex flex-col h-screen overflow-hidden text-sm md:text-base">
 
     <!-- LOGIN OVERLAY -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] bg-black flex items-center justify-center p-4">
-        <div class="glass-panel p-8 rounded-3xl shadow-2xl w-full max-w-md text-center border border-white/10">
+    <!-- LOGIN OVERLAY -->
+    <div id="login-overlay"
+        class="fixed inset-0 z-[100] bg-black bg-opacity-90 flex items-center justify-center p-4 backdrop-blur-md transition-all duration-500"
+        style="min-height: 100dvh;">
+        <div
+            class="glass-panel p-8 rounded-[2rem] shadow-2xl w-full max-w-sm text-center border border-white/10 relative overflow-hidden group">
+
+            <!-- Glow Effect -->
             <div
-                class="w-32 h-32 rounded-full flex items-center justify-center mx-auto mb-6 p-1 border border-white/10 bg-black/50 backdrop-blur-md shadow-2xl overflow-hidden">
-                <img src="https://raw.githubusercontent.com/pluggedtmap/BigClouds/main/upload/hf-1770047655891-160379984.jpg"
-                    class="w-full h-full object-cover">
+                class="absolute -top-10 -right-10 w-40 h-40 bg-red-500/20 rounded-full blur-3xl group-hover:bg-red-500/30 transition-all duration-700">
+            </div>
+            <div
+                class="absolute -bottom-10 -left-10 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl group-hover:bg-purple-500/30 transition-all duration-700">
+            </div>
+
+            <div class="relative z-10">
+                <div
+                    class="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-6 p-1 border border-white/10 bg-black/50 backdrop-blur-md shadow-lg overflow-hidden ring-1 ring-white/5">
+                    <img src="https://raw.githubusercontent.com/pluggedtmap/BigClouds/main/upload/hf-1770047655891-160379984.jpg"
+                        class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
+                </div>
+
+                <h2 class="text-3xl font-bold text-white mb-2 tracking-tight">Big Clouds</h2>
+                <p class="text-gray-400 mb-8 text-xs font-medium uppercase tracking-widest">Espace Administrateur</p>
+
+                <div class="relative mb-4 group/input">
+                    <div
+                        class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none text-gray-400 group-focus-within/input:text-red-500 transition-colors">
+                        <i class="fas fa-lock text-lg"></i>
+                    </div>
+                    <input type="password" id="login-password"
+                        class="w-full bg-black/40 border border-white/10 rounded-2xl py-4 pl-12 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-red-500/50 focus:ring-1 focus:ring-red-500/50 transition-all text-lg"
+                        placeholder="Mot de passe">
+                </div>
+
+                <button id="login-btn"
+                    class="w-full bg-gradient-to-r from-red-600 to-red-500 hover:from-red-500 hover:to-red-400 text-white font-bold py-4 rounded-2xl shadow-lg shadow-red-500/20 active:scale-95 transition-all text-lg tracking-wide">
+                    CONNEXION
+                </button>
+
+                <p id="login-error"
+                    class="text-red-400 mt-4 hidden text-sm font-medium bg-red-500/10 py-2 rounded-lg border border-red-500/20 animate-pulse">
+                    <i class="fas fa-exclamation-circle mr-2"></i>Mot de passe incorrect
+                </p>
             </div>
         </div>
-        <h2 class="text-2xl font-bold text-white mb-2">Admin Big Clouds</h2>
-        <p class="text-gray-400 mb-8 text-sm">Accès Administrateur</p>
-        <input type="password" id="login-password"
-            class="w-full input-dark rounded-xl px-4 py-4 text-white mb-4 text-center tracking-widest text-lg"
-            placeholder="Mot de passe">
-        <button id="login-btn"
-            class="w-full btn-primary py-4 rounded-xl transition-transform active:scale-95 text-lg">CONNEXION</button>
-        <p id="login-error" class="text-red-500 mt-4 hidden text-sm"><i class="fas fa-exclamation-circle mr-2"></i>Mot
-            de passe incorrect</p>
-    </div>
     </div>
 
     <!-- HEADER / NAVIGATION MOBILE FRIENDLY -->
