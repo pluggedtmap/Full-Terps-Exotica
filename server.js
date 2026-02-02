@@ -102,7 +102,14 @@ app.use((req, res, next) => {
 
 // --- TELEGRAM SECURITY & LOYALTY ---
 const crypto = require('crypto'); // Native Node.js crypto
-const BOT_TOKEN = process.env.BOT_TOKEN || '7668706346:AAGZ-u-Jg6YZf5qQGeFJD0zJDIV2tM1dM-8'; // TO BE SECURED IN ENV
+
+// SECURITY: BOT_TOKEN must be set in .env file - no fallback for security
+const BOT_TOKEN = process.env.BOT_TOKEN;
+if (!BOT_TOKEN) {
+    console.error('⚠️ CRITICAL: BOT_TOKEN not found in .env file!');
+    console.error('   Telegram authentication will fail.');
+    console.error('   Add BOT_TOKEN=your_token to /var/www/BigClouds/.env');
+}
 
 // Helper: Verify Telegram Data
 function verifyTelegramWebAppData(telegramInitData) {
