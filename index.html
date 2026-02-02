@@ -3791,6 +3791,12 @@
 
 
 
+        // --- EXÉCUTION AUTOMATIQUE AU CHARGEMENT ---
+        // Permet de récupérer les points immédiatement (si pseudo stocké ou Telegram actif)
+        window.addEventListener('load', () => {
+            console.log("App Loaded. Initializing Loyalty...");
+            setTimeout(() => initLoyalty(), 1000); // Petit délai pour laisser le temps à Telegram de s'init
+        });
     </script>
 </body>
 
