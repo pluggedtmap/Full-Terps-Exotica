@@ -1257,6 +1257,7 @@
                     <div class="aspect-square bg-gray-900 relative">
                         ${img ? `<img src="${img}" class="w-full h-full object-cover opacity-80 group-hover:opacity-100 transition-opacity">` : '<div class="w-full h-full flex items-center justify-center text-gray-700"><i class="fas fa-cannabis text-3xl"></i></div>'}
                         <div class="absolute top-2 right-2 bg-black/60 backdrop-blur px-2 py-0.5 rounded text-[10px] text-white font-bold tracking-wider">${p.category}</div>
+                        ${(p.stockGrams !== undefined && p.stockGrams !== null && p.stockGrams > 0) ? `<div class="absolute bottom-2 right-2 bg-amber-500 text-black px-2 py-1 rounded text-xs font-bold shadow-lg">${p.stockGrams}g</div>` : ''}
                         <div class="absolute top-2 left-2 bg-black/50 w-8 h-8 rounded flex items-center justify-center text-white cursor-move drag-handle z-10"><i class="fas fa-grip-vertical"></i></div>
                     </div>
                     <div class="p-3 flex items-center justify-between gap-2">
