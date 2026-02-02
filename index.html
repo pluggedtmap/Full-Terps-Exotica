@@ -855,8 +855,42 @@
                 </div>
 
                 <!-- 10 Circles Visual -->
-                <div class="flex justify-between gap-1 mb-2 relative z-10" id="loyalty-points-visual-container">
-                    <!-- Généré par JS -->
+                <div class="flex justify-between gap-1 mb-2 relative z-10 overflow-x-auto py-1"
+                    id="loyalty-points-visual-container">
+                    <div id="point-1"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-2"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-3"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-4"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-5"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-6"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-7"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-8"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-9"
+                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
+                    </div>
+                    <div id="point-10"
+                        class="w-8 h-8 flex-shrink-0 rounded-full border border-dashed border-amber-500/50 flex items-center justify-center text-amber-500 relative group cursor-pointer transition-all duration-300 hover:bg-amber-500/10 hover:scale-110 hover:shadow-lg shadow-amber-500/20">
+                        <i class="fas fa-gift text-xs animate-pulse"></i>
+                        <div
+                            class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#121212]">
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Progress Bar -->
@@ -2833,7 +2867,7 @@
             // initLoyalty is defined later with full logic
 
             function updateLoyaltyUI(points, rewards) {
-                const maxPoints = 5;
+                const maxPoints = 10;
                 const currentPoints = Math.min(points, maxPoints);
 
                 // Text
@@ -2844,16 +2878,35 @@
                 document.getElementById('points-progress').style.width = `${progress}%`;
 
                 // Points Circles
-                for (let i = 1; i <= 4; i++) {
+                for (let i = 1; i <= 10; i++) {
                     const p = document.getElementById(`point-${i}`);
+                    if (!p) continue;
+
                     if (i <= currentPoints) {
                         p.classList.remove('border-white/10', 'text-gray-500');
                         p.classList.add('bg-amber-500', 'border-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/50');
                         p.textContent = '✓';
                     } else {
-                        p.className = "w-12 h-12 rounded-full border-2 border-white/10 flex items-center justify-center text-xl transition-all duration-500 text-gray-500";
-                        p.textContent = '⚪';
+                        p.className = "w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300";
+                        p.textContent = '';
                     }
+                }
+
+                // Reward Circle (10th)
+                const p10 = document.getElementById('point-10');
+                if (currentPoints >= 10 && p10) {
+                    p10.classList.add('animate-bounce', 'bg-amber-500', 'text-black');
+                    const btn = document.getElementById('redeem-btn');
+                    if (btn) {
+                        btn.disabled = false;
+                        btn.classList.remove('bg-gray-600', 'opacity-50', 'cursor-not-allowed');
+                        btn.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-yellow-600', 'hover:scale-105', 'active:scale-95', 'shadow-[0_0_20px_rgba(245,158,11,0.4)]');
+                    }
+                    const badge = document.getElementById('loyalty-badge');
+                    if (badge) badge.classList.remove('hidden');
+                } else {
+                    const badge = document.getElementById('loyalty-badge');
+                    if (badge) badge.classList.add('hidden');
                 }
 
                 // Reward Circle (5th)
