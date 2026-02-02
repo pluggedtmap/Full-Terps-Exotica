@@ -2872,23 +2872,20 @@
 
                 console.log('[UI UPDATE] Updating loyalty UI with', currentPoints, 'points');
 
-                // Text - Update to match HTML structure: "X <span>/ 10</span>"
-                const ptsText = document.getElementById('points-text');
-                if (ptsText) {
-                    ptsText.innerHTML = `${currentPoints} <span class="text-lg text-gray-500">/ ${maxPoints}</span>`;
-                    console.log('[UI UPDATE] Updated points-text to:', currentPoints);
-                } else {
-                    console.error('[UI UPDATE] points-text element NOT FOUND!');
+                // ========== SECTION 1: Modal (ligne 848) ==========
+                const ptsText1 = document.getElementById('points-text');
+                if (ptsText1) {
+                    ptsText1.innerHTML = `${currentPoints} <span class="text-lg text-gray-500">/ ${maxPoints}</span>`;
                 }
 
-                // Progress Bar
-                const progress = (currentPoints / maxPoints) * 100;
+                // Progress Bar (section 1)
                 const progressBar = document.getElementById('points-progress');
                 if (progressBar) {
+                    const progress = (currentPoints / maxPoints) * 100;
                     progressBar.style.width = `${progress}%`;
                 }
 
-                // Points Circles
+                // Points Circles by ID (section 1: point-1 to point-10)
                 for (let i = 1; i <= 10; i++) {
                     const p = document.getElementById(`point-${i}`);
                     if (!p) continue;
@@ -2902,6 +2899,27 @@
                         p.textContent = '';
                     }
                 }
+
+                // ========== SECTION 2: Page Fidélité (ligne 1190) ==========
+                const ptsText2 = document.getElementById('loyalty-points-text');
+                if (ptsText2) {
+                    ptsText2.innerHTML = `${currentPoints}<span class="text-2xl text-gray-600">/10</span>`;
+                    console.log('[UI UPDATE] Updated loyalty-points-text to:', currentPoints);
+                }
+
+                // Points Circles by CLASS (section 2: .loyalty-point)
+                const loyaltyPoints = document.querySelectorAll('.loyalty-point');
+                loyaltyPoints.forEach((p, index) => {
+                    if (index < currentPoints) {
+                        p.classList.remove('bg-white/5', 'border-white/10');
+                        p.classList.add('bg-amber-500', 'border-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/30');
+                        p.innerHTML = '<i class="fas fa-check text-xs"></i>';
+                    } else {
+                        p.classList.remove('bg-amber-500', 'border-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/30');
+                        p.classList.add('bg-white/5', 'border-white/10');
+                        p.innerHTML = '';
+                    }
+                });
 
                 // Reward Circle (10th)
                 const p10 = document.getElementById('point-10');
