@@ -663,7 +663,23 @@ app.post('/api/clients/points', verifyAdmin, (req, res) => {
     res.json({ success: true, points: db.users[userId].points });
 });
 
-// Fallback
+// Delete Loyalty Client
+app.delete('/api/clients/delete', verifyAdmin, (req, res) => {
+    const { userId } = req.body;
+    const db = loadData();
+
+    if (!db.users[userId]) {
+        return res.json({ success: false, message: "Utilisateur non trouvé" });
+    }
+
+    // Delete the user from the loyalty database
+    delete db.users[userId];
+
+    saveData(db);
+    console.log(`[ADMIN] Deleted loyalty user: ${userId}`);
+    res.json({ success: true, message: "Client supprimé" });
+});
+
 app.get('*', (req, res) => {
     if (req.accepts('html')) {
         res.sendFile(path.join(__dirname, 'index.html'));
