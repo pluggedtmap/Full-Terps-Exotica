@@ -2670,8 +2670,8 @@
                     const shortId = result.orderId;
                     msg = `Commande No ${shortId}\n` + msg;
 
-                    // REFRESH LOYALTY UI
-                    setTimeout(() => initLoyalty(), 500);
+                    // REFRESH LOYALTY UI (Wait for DB write)
+                    setTimeout(() => initLoyalty(), 1500);
                 }
             } catch (e) { console.error("Erreur sauvegarde", e); }
 
@@ -3099,10 +3099,11 @@
                 if (initData) headers['x-telegram-init-data'] = initData;
                 if (storedPseudo) headers['x-pseudo'] = storedPseudo;
 
-                const res = await fetch('/api/loyalty', {
+                const res = await fetch('/api/loyalty?t=' + Date.now(), {
                     headers: headers
                 });
                 const json = await res.json();
+                console.log('Loyalty Updated:', json);
                 if (json.success) {
                     userLoyaltyData = { points: json.points || 0, rewards: json.rewards || [] };
                     updateLoyaltyUI(userLoyaltyData.points, userLoyaltyData.rewards);
