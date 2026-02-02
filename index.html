@@ -3249,17 +3249,7 @@
             if (window.myReferralLink) {
                 // Use fallback for better mobile compatibility if navigator.clipboard is flaky in webview
                 if (navigator.clipboard) {
-                    navigator.clipboard.writeText(window.myReferralLink).then(() => {
-                        showToast("Lien copié !", "success");
-                        // TRACKING: Signal intent to share
-                        const initData = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp.initData : null;
-                        const pseudo = localStorage.getItem('userPseudo');
-                        const headers = {};
-                        if (initData) headers['x-telegram-init-data'] = initData;
-                        if (pseudo) headers['x-pseudo'] = pseudo;
-
-                        fetch('/api/track-share', { method: 'POST', headers }).catch(err => console.error("Track error", err));
-                    });
+                    navigator.clipboard.writeText(window.myReferralLink).then(() => showToast("Lien copié !", "success"));
                 } else {
                     const temp = document.createElement('textarea');
                     temp.value = window.myReferralLink;

@@ -418,37 +418,6 @@ app.get('/api/loyalty', (req, res) => {
     res.json({ success: true, points: finalPoints, rewards: finalRewards });
 });
 
-// NEW: Track Referral Link Copies (Share Intent)
-app.post('/api/track-share', (req, res) => {
-    const initData = req.headers['x-telegram-init-data'];
-    const pseudoHeader = req.headers['x-pseudo'];
-    let userId = null;
-
-    if (initData) {
-        const user = verifyTelegramWebAppData(initData);
-        if (user) userId = user.id;
-    }
-
-    if (!userId && pseudoHeader) {
-        const safePseudo = pseudoHeader.trim();
-        userId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
-    }
-
-    if (!userId) return res.status(401).json({ success: false });
-
-    const db = loadData();
-    if (!db.users[userId]) {
-        // Create basic user if not exists (unlikely if they are sharing)
-        db.users[userId] = { points: 0, rewards: [], first_name: "Sharer", joinedAt: new Date().toISOString() };
-    }
-
-    db.users[userId].shareCount = (db.users[userId].shareCount || 0) + 1;
-    saveData(db);
-
-    console.log(`[SHARE] User ${userId} copied referral link. Total shares: ${db.users[userId].shareCount}`);
-    res.json({ success: true, shareCount: db.users[userId].shareCount });
-});
-
 // Redeem Reward
 app.post('/api/loyalty/redeem', (req, res) => {
     const initData = req.headers['x-telegram-init-data'];
