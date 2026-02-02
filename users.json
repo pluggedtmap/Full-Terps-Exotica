@@ -1,0 +1,49 @@
+{
+  "111222333": {
+    "points": 0,
+    "totalSpent": 85,
+    "rewards": []
+  },
+  "123456789": {
+    "points": 0,
+    "totalSpent": 245.5,
+    "rewards": []
+  },
+  "444333222": {
+    "points": 5,
+    "totalSpent": 320.45,
+    "rewards": []
+  },
+  "555555555": {
+    "points": 12,
+    "totalSpent": 756.8,
+    "rewards": [
+      {
+        "code": "REWARD-XYZ789",
+        "date": "2026-01-10T14:20:00.000Z",
+        "used": false
+      },
+      {
+        "code": "REWARD-DEF456",
+        "date": "2026-01-18T16:45:00.000Z",
+        "used": false
+      }
+    ]
+  },
+  "987654321": {
+    "points": 0,
+    "totalSpent": 489,
+    "rewards": [
+      {
+        "code": "REWARD-ABC123",
+        "date": "2026-01-15T10:30:00.000Z",
+        "used": false
+      }
+    ]
+  },
+  "999888777": {
+    "points": 0,
+    "totalSpent": 1250.99,
+    "rewards": []
+  }
+}
