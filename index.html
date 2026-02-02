@@ -2635,6 +2635,9 @@
                     // Backend now returns the 4-digit code directly
                     const shortId = result.orderId;
                     msg = `Commande No ${shortId}\n` + msg;
+
+                    // REFRESH LOYALTY UI
+                    setTimeout(() => initLoyalty(), 500);
                 }
             } catch (e) { console.error("Erreur sauvegarde", e); }
 
