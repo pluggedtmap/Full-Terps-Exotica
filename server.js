@@ -19,7 +19,7 @@ const ORDERS_FILE = path.join(__dirname, 'orders.json');
 // --- GITHUB CONFIG ---
 const GH_TOKEN = process.env.GITHUB_TOKEN;
 const GH_OWNER = process.env.GITHUB_OWNER || 'pluggedtmap';
-const GH_REPO = process.env.GITHUB_REPO || 'BigCloudSAVE'; // Default updated
+const GH_REPO = process.env.GITHUB_REPO || 'BigClouds'; // Default updated
 const GH_BRANCH = 'main';
 const GH_UPLOAD_DIR = 'upload';
 
