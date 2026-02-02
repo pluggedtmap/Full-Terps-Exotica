@@ -66,30 +66,49 @@
             }
         }
 
-        /* CONFIGURATION DU FOND ANIMÉ */
-        .fond-anime {
-            background: linear-gradient(-45deg, #245168, #3b6186, #245168, #3b6186);
-            background-size: 400% 400%;
-            animation: gradientAnimation 15s ease infinite;
+        /* CLOUD/FOG ANIMATION */
+        .fog-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            z-index: -2;
+            overflow: hidden;
+            z-index: -1;
+            background: linear-gradient(180deg, #0a0a0f 0%, #1a1a2e 100%);
+            /* Deep Dark Blue Base */
         }
 
-        @keyframes gradientAnimation {
-            0% {
-                background-position: 0% 50%;
-            }
+        .fog-img {
+            position: absolute;
+            height: 100vh;
+            width: 300vw;
+            z-index: 1;
+            opacity: 0.4;
+            background: url('https://raw.githubusercontent.com/pluggedtmap/BigClouds/main/cloud-texture.png') repeat-x;
+            background-size: contain;
+            animation: fog 60s linear infinite;
+        }
 
-            50% {
-                background-position: 100% 50%;
+        .fog-img-2 {
+            position: absolute;
+            height: 100vh;
+            width: 300vw;
+            z-index: 2;
+            opacity: 0.2;
+            background: url('https://raw.githubusercontent.com/pluggedtmap/BigClouds/main/cloud-texture.png') repeat-x;
+            background-size: contain;
+            animation: fog 40s linear infinite reverse;
+            top: 20%;
+        }
+
+        @keyframes fog {
+            0% {
+                transform: translate3d(0, 0, 0);
             }
 
             100% {
-                background-position: 0% 50%;
+                transform: translate3d(-200vw, 0, 0);
             }
         }
 
@@ -679,7 +698,11 @@
 
     <!-- STRUCTURE HTML DU FOND -->
     <!-- FOND ANIMÉ -->
-    <div class="fond-anime"></div>
+    <!-- FOG ANIMATION CONTAINER -->
+    <div class="fog-container">
+        <div class="fog-img"></div>
+        <div class="fog-img-2"></div>
+    </div>
 
     <!-- Splash Screen -->
     <div id="splash-screen">
