@@ -346,9 +346,40 @@ app.get('/api/loyalty', (req, res) => {
     if (!userId) return res.status(401).json({ success: false, message: "Non authentifié" });
 
     const db = loadData();
-    const userData = db.users[userId] || { points: 0, rewards: [] };
 
-    res.json({ success: true, points: userData.points, rewards: userData.rewards || [] });
+    // CRITICAL FIX: Check BOTH Telegram ID and Pseudo ID
+    // User might have points under pseudo but authenticating via Telegram (or vice versa)
+    let finalPoints = 0;
+    let finalRewards = [];
+
+    // Check current userId (could be Telegram or Pseudo)
+    if (db.users[userId]) {
+        finalPoints = db.users[userId].points || 0;
+        finalRewards = db.users[userId].rewards || [];
+        console.log(`[LOYALTY] Found ${finalPoints} points under ${userId}`);
+    }
+
+    // ALSO check the Pseudo ID if we have the header (even if Telegram auth succeeded)
+    if (pseudoHeader) {
+        const safePseudo = pseudoHeader.trim();
+        const pseudoId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+
+        // If this is a DIFFERENT ID than what we already checked
+        if (pseudoId !== userId && db.users[pseudoId]) {
+            const pseudoPoints = db.users[pseudoId].points || 0;
+            console.log(`[LOYALTY] ALSO found ${pseudoPoints} points under ${pseudoId}`);
+
+            // Use MAX to avoid double-counting but ensure we show the real score
+            if (pseudoPoints > finalPoints) {
+                finalPoints = pseudoPoints;
+                finalRewards = db.users[pseudoId].rewards || [];
+                console.log(`[LOYALTY] Using Pseudo account points instead (higher)`);
+            }
+        }
+    }
+
+    console.log(`[LOYALTY] Final response: ${finalPoints} points`);
+    res.json({ success: true, points: finalPoints, rewards: finalRewards });
 });
 
 // Redeem Reward
