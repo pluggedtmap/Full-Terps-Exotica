@@ -27,14 +27,9 @@ const uploadMemory = multer({ storage: multer.memoryStorage() });
 const https = require('https'); // For GitHub API calls
 
 // --- SECURITE & MIDDLEWARE ---
-// app.use(helmet({ contentSecurityPolicy: false }));
-// Remplacement temporaire de Helmet qui cause un crash
-app.use((req, res, next) => {
-    res.setHeader("X-Content-Type-Options", "nosniff");
-    res.setHeader("X-XSS-Protection", "1; mode=block");
-    next();
-});
-const allowedOrigins = ['https://hashfiltered420.cloud', 'https://www.hashfiltered420.cloud', 'http://localhost:3000', 'http://localhost:3002', 'https://bigclouds.com'];
+app.use(helmet({ contentSecurityPolicy: false }));
+// Manual headers removed in favor of Helmet
+const allowedOrigins = ['https://bigclouds.shop', 'https://www.bigclouds.shop', 'https://hashfiltered420.cloud', 'https://www.hashfiltered420.cloud', 'http://localhost:3000', 'http://localhost:3002', 'https://bigclouds.com'];
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
