@@ -322,6 +322,9 @@ app.delete('/api/products/:id', verifyAdmin, (req, res) => {
 // Get Loyalty Info
 app.get('/api/loyalty', (req, res) => {
     const initData = req.headers['x-telegram-init-data'];
+    const pseudoHeader = req.headers['x-pseudo'];
+    console.log(`[LOYALTY CHECK] InitData: ${initData ? 'YES' : 'NO'}, Pseudo: ${pseudoHeader}`);
+
     let userId = null;
 
     if (initData) {
@@ -334,7 +337,9 @@ app.get('/api/loyalty', (req, res) => {
         const pseudo = req.headers['x-pseudo'];
         if (pseudo) {
             // Reconstruct the synthetic ID
-            userId = `pseudo_${pseudo.trim().toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+            const safePseudo = pseudo.trim();
+            userId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
+            console.log(`[LOYALTY] Auth via Pseudo: ${userId}`);
         }
     }
 
