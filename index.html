@@ -739,8 +739,8 @@
     <nav class="nav-dock">
         <a href="javascript:void(0)" onclick="window.showHome()" class="nav-item active ripple-effect"><i
                 class="fas fa-home"></i></a>
-        <a href="javascript:void(0)" onclick="window.openLoyaltyModal()" class="nav-item ripple-effect"><i
-                class="fas fa-gift"></i></a>
+        <a href="javascript:void(0)" id="nav-loyalty-btn" onclick="window.openLoyaltyModal()"
+            class="nav-item ripple-effect hidden"><i class="fas fa-gift"></i></a>
         <a href="javascript:void(0)" onclick="window.openContactModal()" class="nav-item ripple-effect"><i
                 class="fas fa-comment-dots"></i></a>
         <a href="javascript:void(0)" onclick="window.openCartPage()" class="nav-item ripple-effect relative">
@@ -3833,11 +3833,21 @@
             });
         };
 
-        // Initialize loyalty on page load (if in Telegram)
-        if (window.Telegram && window.Telegram.WebApp) {
+        // Initialize loyalty on page load (ONLY if in Telegram)
+        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
             window.Telegram.WebApp.ready();
             window.Telegram.WebApp.expand();
-            initLoyalty();
+
+            // Show loyalty button ONLY for Telegram users
+            const loyaltyNavBtn = document.getElementById('nav-loyalty-btn');
+            if (loyaltyNavBtn) {
+                loyaltyNavBtn.classList.remove('hidden');
+            }
+
+            // Initialize loyalty with delay
+            setTimeout(() => initLoyalty(), 1000);
+        } else {
+            console.log('[LOYALTY] Not in Telegram WebApp - Loyalty disabled');
         }
 
         // --- SCROLL LOCK HELPER ---
@@ -3851,14 +3861,7 @@
 
         document.addEventListener('click', function (e) { const target = e.target.closest('.ripple-effect'); if (target) { const rect = target.getBoundingClientRect(); const ripple = document.createElement('span'); ripple.className = 'ripple-span'; ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px'; ripple.style.left = e.clientX - rect.left - rect.width / 2 + 'px'; ripple.style.top = e.clientY - rect.top - rect.height / 2 + 'px'; target.appendChild(ripple); setTimeout(() => ripple.remove(), 600); } });
 
-
-
-        // --- EXÉCUTION AUTOMATIQUE AU CHARGEMENT ---
-        // Permet de récupérer les points immédiatement (si pseudo stocké ou Telegram actif)
-        window.addEventListener('load', () => {
-            console.log("App Loaded. Initializing Loyalty...");
-            setTimeout(() => initLoyalty(), 1000); // Petit délai pour laisser le temps à Telegram de s'init
-        });
+        // REMOVED: window.addEventListener('load') for loyalty - now handled above for Telegram only
     </script>
 </body>
 

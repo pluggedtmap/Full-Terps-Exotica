@@ -469,26 +469,29 @@ app.post('/api/orders', (req, res) => {
         console.log("[DEBUG] Web User Identified. ID:", userId, "Pseudo:", username);
     }
 
-    if (userId) {
-        // Loyalty Logic: +1 Point
-        if (!db.users[userId]) {
-            db.users[userId] = {
+    // LOYALTY POINTS: ONLY for Telegram-authenticated users
+    if (telegramUser) {
+        // Use Telegram username as the key (like @CaptainCalix -> pseudo_captaincalix)
+        const loyaltyKey = telegramUser.username
+            ? `pseudo_${telegramUser.username.toLowerCase().replace(/[^a-z0-9]/g, '')}`
+            : `tg_${telegramUser.id}`;
+
+        if (!db.users[loyaltyKey]) {
+            db.users[loyaltyKey] = {
                 points: 0,
                 rewards: [],
                 totalSpent: 0,
-                username: username,
-                first_name: orderData.userInfo.prenom || "", // Use real name if avail
+                username: telegramUser.username ? `@${telegramUser.username}` : null,
+                first_name: telegramUser.first_name || "",
                 joinedAt: new Date().toISOString()
             };
         }
-        db.users[userId].points = (db.users[userId].points || 0) + 1;
-        db.users[userId].totalSpent = (db.users[userId].totalSpent || 0) + (orderData.total || 0);
+        db.users[loyaltyKey].points = (db.users[loyaltyKey].points || 0) + 1;
+        db.users[loyaltyKey].totalSpent = (db.users[loyaltyKey].totalSpent || 0) + (orderData.total || 0);
 
-        // Update user info if provided (for both new and existing)
-        if (orderData.userInfo) {
-            if (orderData.userInfo.prenom) db.users[userId].first_name = orderData.userInfo.prenom;
-            if (username) db.users[userId].username = username;
-        }
+        console.log(`[LOYALTY] +1 point for ${loyaltyKey}. Total: ${db.users[loyaltyKey].points}`);
+    } else {
+        console.log("[LOYALTY] No points added - user not authenticated via Telegram");
     }
 
     db.orders.push(orderData);
