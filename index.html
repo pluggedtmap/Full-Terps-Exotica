@@ -927,6 +927,37 @@
                 <p class="text-gray-500 text-[10px] mt-2">Envoyez ce code lors de votre commande.</p>
             </div>
 
+            <!-- REFERRAL SECTION (NEW) -->
+            <div class="mt-6 border-t border-white/10 pt-4">
+                <h3 class="text-sm font-bold text-gray-400 uppercase mb-3 flex items-center gap-2">
+                    <i class="fas fa-users text-blue-400"></i> Parrainage
+                </h3>
+                <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
+                    <div class="flex items-start gap-3 mb-3">
+                        <div
+                            class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
+                            <span class="text-blue-400 font-bold text-sm">+1</span>
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold text-white">Gagnez des points !</p>
+                            <p class="text-xs text-gray-400">Invitez un ami. S'il commande, vous recevez <span
+                                    class="text-amber-400 font-bold">1 point</span> automatiquement.</p>
+                        </div>
+                    </div>
+
+                    <div class="flex gap-2">
+                        <div class="flex-1 bg-black/40 rounded-lg border border-white/10 px-3 py-2 text-xs font-mono text-gray-400 truncate flex items-center select-all"
+                            id="referral-link-display">
+                            Chargement...
+                        </div>
+                        <button onclick="copyReferralLink()"
+                            class="bg-blue-600 hover:bg-blue-500 text-white px-3 rounded-lg text-xs font-bold transition-colors shadow-lg active:scale-95">
+                            <i class="fas fa-copy"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
         </div>
     </div>
 
@@ -3164,6 +3195,22 @@
                     }
 
                     updateLoyaltyUI(window.userLoyaltyData.points, window.userLoyaltyData.rewards);
+
+                    // REFERRAL SETUP
+                    const referralDisplay = document.getElementById('referral-link-display');
+                    if (referralDisplay) {
+                        if (telegramUsername) {
+                            const link = `https://t.me/BigCloudsBot?start=ref_${telegramUsername}`;
+                            referralDisplay.textContent = link;
+                            window.myReferralLink = link;
+                        } else if (storedPseudo) {
+                            const link = `https://t.me/BigCloudsBot?start=ref_${storedPseudo}`;
+                            referralDisplay.textContent = link;
+                            window.myReferralLink = link;
+                        } else {
+                            referralDisplay.textContent = "Pseudo requis (Telegram)";
+                        }
+                    }
                 } else {
                     console.warn('Loyalty Fetch Failed:', json.message);
                     if (typeof showToast === 'function') {
@@ -3172,6 +3219,25 @@
                 }
             } catch (e) {
                 console.error('Loyalty fetch error:', e);
+            }
+        }
+
+        function copyReferralLink() {
+            if (window.myReferralLink) {
+                // Use fallback for better mobile compatibility if navigator.clipboard is flaky in webview
+                if (navigator.clipboard) {
+                    navigator.clipboard.writeText(window.myReferralLink).then(() => showToast("Lien copié !", "success"));
+                } else {
+                    const temp = document.createElement('textarea');
+                    temp.value = window.myReferralLink;
+                    document.body.appendChild(temp);
+                    temp.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(temp);
+                    showToast("Lien copié !", "success");
+                }
+            } else {
+                showToast("Pseudo introuvable", "error");
             }
         }
 

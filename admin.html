@@ -574,6 +574,20 @@
                             <input type="text" id="modal-farm" class="w-full input-dark rounded-xl px-3 py-3">
                         </div>
                     </div>
+
+                    <!-- Stock Management -->
+                    <div class="bg-amber-500/10 border border-amber-500/20 rounded-xl p-3">
+                        <label class="block text-xs font-bold text-amber-400 uppercase mb-2">
+                            <i class="fas fa-box mr-1"></i> Stock disponible (grammes)
+                        </label>
+                        <div class="flex gap-2 items-center">
+                            <input type="number" id="modal-stock"
+                                class="flex-1 input-dark rounded-lg px-3 py-3 text-lg font-bold text-center"
+                                placeholder="0" step="0.1" min="0">
+                            <span class="text-amber-400 font-bold text-lg">g</span>
+                        </div>
+                        <p class="text-xs text-gray-500 mt-2">Laissez vide ou 0 pour désactiver le suivi du stock</p>
+                    </div>
                 </div>
 
                 <!-- Description -->
@@ -1284,6 +1298,7 @@
                 $('#modal-name').value = p.name;
                 $('#modal-category').value = p.category;
                 $('#modal-farm').value = p.farm || '';
+                $('#modal-stock').value = p.stockGrams || '';
                 $('#modal-description').value = p.description || '';
                 $('#modal-extraInfo').value = p.extraInfo || '';
                 $('#modal-extraInfoColor').value = p.extraInfoColor || '#ef4444';
@@ -1295,7 +1310,7 @@
                 $('#modal-delete-btn').classList.remove('hidden');
             } else {
                 $('#product-id-input').value = `prod_${Date.now()}`;
-                $('#modal-name').value = ''; $('#modal-description').value = ''; $('#modal-farm').value = ''; $('#modal-extraInfo').value = '';
+                $('#modal-name').value = ''; $('#modal-description').value = ''; $('#modal-farm').value = ''; $('#modal-stock').value = ''; $('#modal-extraInfo').value = '';
                 setDescPos('top');
                 $('#modal-title').innerText = "Nouveau Produit";
                 addPriceRow('1g', 10);
@@ -1314,9 +1329,11 @@
 
         $('#modal-save-btn').addEventListener('click', async () => {
             const id = $('#product-id-input').value;
+            const stockValue = parseFloat($('#modal-stock').value) || 0;
             const p = {
                 id, name: $('#modal-name').value || '---', category: $('#modal-category').value, farm: $('#modal-farm').value, description: $('#modal-description').value,
                 descPosition: $('#modal-desc-pos').value, extraInfo: $('#modal-extraInfo').value, extraInfoColor: $('#modal-extraInfoColor').value,
+                stockGrams: stockValue, // Stock en grammes
                 prices: {}, varieties: [], mediaMap: {}, images: []
             };
             $$('#modal-prices-list > div').forEach(r => {

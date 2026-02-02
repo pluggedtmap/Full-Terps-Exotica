@@ -501,6 +501,26 @@ app.post('/api/orders', (req, res) => {
         console.log("[LOYALTY] No points added - user not authenticated via Telegram");
     }
 
+    // STOCK MANAGEMENT: Reduce stock for each item in the order
+    if (orderData.items && Array.isArray(orderData.items)) {
+        orderData.items.forEach(item => {
+            const productId = item.productId || item.id;
+            if (productId && db.products[productId]) {
+                const product = db.products[productId];
+                if (product.stockGrams && product.stockGrams > 0) {
+                    // Parse weight from order (e.g., "3.5g" -> 3.5)
+                    const weightStr = item.weight || item.selectedWeight || '0';
+                    const weight = parseFloat(weightStr.replace(/[^0-9.]/g, '')) || 0;
+                    const quantity = item.quantity || 1;
+                    const totalGrams = weight * quantity;
+
+                    product.stockGrams = Math.max(0, product.stockGrams - totalGrams);
+                    console.log(`[STOCK] ${product.name}: -${totalGrams}g (reste: ${product.stockGrams}g)`);
+                }
+            }
+        });
+    }
+
     db.orders.push(orderData);
     if (db.orders.length > 200) db.orders.shift(); // Keep last 200
 
