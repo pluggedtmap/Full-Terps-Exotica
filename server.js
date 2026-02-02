@@ -409,9 +409,10 @@ app.post('/api/orders', (req, res) => {
     orderData.status = 'pending';
 
     // Link to Telegram User & Loyalty Support
-    // Link to Telegram User & Loyalty Support
     let userId = null;
     let username = null;
+
+    console.log("[DEBUG] ORDER RECEIVED. UserInfo:", orderData.userInfo);
 
     if (telegramUser) {
         userId = telegramUser.id;
@@ -425,6 +426,7 @@ app.post('/api/orders', (req, res) => {
         userId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
         username = safePseudo;
         orderData.telegramUsername = safePseudo + " (Web)";
+        console.log("[DEBUG] Web User Identified. ID:", userId, "Pseudo:", username);
     }
 
     if (userId) {
