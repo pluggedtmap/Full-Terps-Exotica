@@ -1,6 +1,6 @@
 module.exports = {
     apps: [{
-        name: "BigClouds",
+        name: "FullTerpsExotica",
         script: "./server.js",
         env: {
             NODE_ENV: "production",

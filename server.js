@@ -19,7 +19,7 @@ const ORDERS_FILE = path.join(__dirname, 'orders.json');
 // --- GITHUB CONFIG ---
 const GH_TOKEN = process.env.GITHUB_TOKEN;
 const GH_OWNER = process.env.GITHUB_OWNER || 'pluggedtmap';
-const GH_REPO = process.env.GITHUB_REPO || 'BigClouds'; // Default updated
+const GH_REPO = process.env.GITHUB_REPO || 'BigCloudSAVE'; // Default updated
 const GH_BRANCH = 'main';
 const GH_UPLOAD_DIR = 'upload';
 
@@ -30,7 +30,7 @@ const https = require('https'); // For GitHub API calls
 // --- SECURITE & MIDDLEWARE ---
 app.use(helmet({ contentSecurityPolicy: false }));
 // Manual headers removed in favor of Helmet
-const allowedOrigins = ['https://bigclouds.shop', 'https://www.bigclouds.shop', 'https://hashfiltered420.cloud', 'https://www.hashfiltered420.cloud', 'http://localhost:3000', 'http://localhost:4005', 'https://bigclouds.com'];
+const allowedOrigins = ['https://fullterpsexotica.com', 'https://www.fullterpsexotica.com', 'https://bigclouds.shop', 'https://www.bigclouds.shop', 'https://hashfiltered420.cloud', 'https://www.hashfiltered420.cloud', 'http://localhost:3000', 'http://localhost:4005'];
 app.use(cors({
     origin: function (origin, callback) {
         // Allow requests with no origin (like mobile apps or curl requests)
@@ -108,7 +108,7 @@ const BOT_TOKEN = process.env.BOT_TOKEN;
 if (!BOT_TOKEN) {
     console.error('⚠️ CRITICAL: BOT_TOKEN not found in .env file!');
     console.error('   Telegram authentication will fail.');
-    console.error('   Add BOT_TOKEN=your_token to /var/www/BigClouds/.env');
+    console.error('   Add BOT_TOKEN=your_token to /var/www/FullTerpsExotica/.env');
 }
 
 // Helper: Verify Telegram Data
@@ -620,7 +620,7 @@ app.post('/api/upload-github', verifyAdmin, uploadMemory.single('file'), (req, r
         method: 'PUT',
         headers: {
             'Authorization': `Bearer ${GH_TOKEN}`,
-            'User-Agent': 'BigClouds-Server',
+            'User-Agent': 'FullTerpsExotica-Server',
             'Content-Type': 'application/json',
             'Content-Length': Buffer.byteLength(body)
         }
@@ -661,7 +661,7 @@ app.get('/api/github-files', verifyAdmin, (req, res) => {
         method: 'GET',
         headers: {
             'Authorization': `Bearer ${GH_TOKEN}`,
-            'User-Agent': 'BigClouds-Server'
+            'User-Agent': 'FullTerpsExotica-Server'
         }
     };
 
@@ -757,6 +757,6 @@ app.get('*', (req, res) => {
 });
 
 const server = app.listen(PORT, () => {
-    console.log(`✅ Serveur Big Clouds démarré sur http://localhost:${PORT}`);
+    console.log(`✅ Serveur Full Terps Exotica démarré sur http://localhost:${PORT}`);
 });
 server.setTimeout(10 * 60 * 1000); // 10 minutes timeout for handling large uploads
