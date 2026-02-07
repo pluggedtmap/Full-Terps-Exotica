@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Full Terps Exotica</title>
 
@@ -14,9 +15,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <!-- PRELOAD LOGO (Affichage instantané) -->
-    <link rel="preload" as="image" href="uploads/full_terps_exotica_logo.png">
+    <link rel="preload" as="image" href="uploads/logo_splashscreen.jpg">
 
-    <meta property="og:image" content="uploads/full_terps_exotica_logo.png" />
+    <meta property="og:image" content="uploads/logo_splashscreen.jpg" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 
@@ -66,7 +67,7 @@
 
         /* CONFIGURATION DU FOND ANIMÉ */
         .fond-anime {
-            background: linear-gradient(-45deg, #245168, #3b6186, #245168, #3b6186);
+            background: linear-gradient(-45deg, #4a0404, #033311, #4a0404, #033311);
             background-size: 400% 400%;
             animation: gradientAnimation 15s ease infinite;
             position: fixed;
@@ -296,13 +297,13 @@
             flex-direction: column;
             justify-content: center;
             align-items: center;
-            background-color: rgba(15, 65, 108, 0.85);
-            /* Couleur #0f416c avec transparence */
+            background: linear-gradient(135deg, rgba(23, 91, 28, 0.85) 0%, rgba(79, 13, 13, 0.85) 100%);
+            /* Dégradé vert (#175b1c) et rouge (#4f0d0d) avec transparence */
             backdrop-filter: blur(50px);
             /* L'effet de flou (Blur) */
             -webkit-backdrop-filter: blur(50px);
             /* Pour la compatibilité Safari */
-            transition: background-color 2s ease-in-out, backdrop-filter 2s ease-in-out, -webkit-backdrop-filter 2s ease-in-out, opacity 0.8s ease;
+            transition: background 2s ease-in-out, backdrop-filter 2s ease-in-out, -webkit-backdrop-filter 2s ease-in-out, opacity 0.8s ease;
         }
 
         .splash-logo {
@@ -684,7 +685,7 @@
     <div id="splash-screen">
         <div class="relative z-10 flex flex-col items-center">
             <!-- Logo géré dynamiquement par le script, mais pré-rempli pour affichage immédiat -->
-            <img id="splash-logo" class="splash-logo mb-6" src="uploads/full_terps_exotica_logo.png" alt="Splash Logo">
+            <img id="splash-logo" class="splash-logo mb-6" src="uploads/logo_splashscreen.jpg" alt="Splash Logo">
 
             <div
                 class="w-48 h-1.5 bg-white/10 rounded-full overflow-hidden backdrop-blur-md border border-white/20 shadow-[0_0_15px_rgba(255,255,255,0.1)]">
@@ -699,7 +700,7 @@
         <div class="p-4 grid grid-cols-2 gap-3 pt-6">
             <div class="bento-card hero-card col-span-2 h-auto relative group" id="banner-container"
                 style="overflow: hidden; display: flex; align-items: center; justify-content: center; background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);">
-                <img src="uploads/full_terps_exotica_logo.png" alt="Full Terps Exotica Banner"
+                <img src="uploads/banner_home.jpg" alt="Full Terps Exotica Banner"
                     style="width: 100%; height: auto; object-fit: contain; filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));">
             </div>
 
@@ -739,8 +740,6 @@
     <nav class="nav-dock">
         <a href="javascript:void(0)" onclick="window.showHome()" class="nav-item active ripple-effect"><i
                 class="fas fa-home"></i></a>
-        <a href="javascript:void(0)" id="nav-loyalty-btn" onclick="window.openLoyaltyModal()"
-            class="nav-item ripple-effect hidden"><i class="fas fa-gift"></i></a>
         <a href="javascript:void(0)" onclick="window.openContactModal()" class="nav-item ripple-effect"><i
                 class="fas fa-comment-dots"></i></a>
         <a href="javascript:void(0)" onclick="window.openCartPage()" class="nav-item ripple-effect relative">
@@ -802,168 +801,6 @@
                 class="flex-[2] btn-primary ripple-effect flex items-center justify-center gap-2 text-sm shadow-lg shadow-white/10">
                 <i class="fab fa-telegram-plane"></i> COMMANDER
             </button>
-        </div>
-    </div>
-
-    <!-- LOYALTY BUTTON (Float Top Right) -->
-    <button onclick="openLoyaltyModal()"
-        class="fixed top-4 right-4 z-40 btn-glass-pill ripple-effect bg-amber-500/20 border-amber-500/30 text-amber-400 shadow-[0_0_15px_rgba(245,158,11,0.2)]">
-        <i class="fas fa-gift"></i>
-        <span id="loyalty-badge"
-            class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full hidden animate-pulse"></span>
-    </button>
-
-    <!-- LOYALTY MODAL -->
-    <!-- LOYALTY MODAL -->
-    <div id="loyalty-modal-overlay" class="fixed inset-0 z-[100] hidden">
-        <div class="absolute inset-0 bg-black/80 backdrop-blur-xl transition-opacity opacity-0" id="loyalty-backdrop"
-            onclick="window.closeLoyaltyModal()"></div>
-        <div class="absolute bottom-0 left-0 w-full bg-[#0a0a0a] rounded-t-3xl p-6 transform translate-y-full transition-transform duration-300 border-t border-amber-500/20 shadow-2xl safe-area-pb max-h-[85vh] overflow-y-auto custom-scroll"
-            id="loyalty-sheet" onclick="event.stopPropagation()">
-
-            <!-- Header with Close Button -->
-            <div class="flex justify-between items-start mb-4">
-                <div class="w-12 h-1.5 bg-gray-800 rounded-full mx-auto absolute left-1/2 -translate-x-1/2 top-4"></div>
-                <button onclick="window.closeLoyaltyModal()"
-                    class="ml-auto w-8 h-8 rounded-full bg-white/5 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-colors z-20">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-
-            <!-- Title -->
-            <div class="text-center mb-6 mt-2">
-                <div
-                    class="inline-block p-3 rounded-full bg-amber-500/10 border border-amber-500/20 mb-3 shadow-[0_0_20px_rgba(245,158,11,0.1)] relative group">
-                    <i class="fas fa-crown text-3xl text-amber-500"></i>
-                    <div id="loyalty-username-badge"
-                        class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 bg-black/80 border border-amber-500/30 text-amber-200 text-[10px] px-2 py-0.5 rounded-full whitespace-nowrap hidden">
-                        @User
-                    </div>
-                </div>
-                <h2 class="text-2xl font-black text-white mb-1">Fidélité Full Terps Exotica</h2>
-                <div class="text-amber-500/80 text-sm font-medium tracking-wide uppercase">Programme Exclusive</div>
-            </div>
-
-            <!-- Points Display (10 Points) -->
-            <div class="bg-white/5 rounded-2xl p-5 border border-white/10 mb-6 relative overflow-hidden">
-                <div class="absolute top-0 right-0 w-32 h-32 bg-amber-500/10 rounded-full blur-3xl -mr-10 -mt-10"></div>
-
-                <div class="flex justify-between items-end mb-4 relative z-10">
-                    <div>
-                        <div class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Votre Solde</div>
-                        <div id="points-text" class="text-3xl font-black text-white">0 <span
-                                class="text-lg text-gray-500">/ 10</span></div>
-                    </div>
-                    <div class="text-right">
-                        <div class="text-gray-400 text-xs font-bold uppercase tracking-wider mb-1">Prochain Cadeau</div>
-                        <div class="text-amber-400 font-bold text-sm"><i class="fas fa-gift mr-1"></i> à 10 points</div>
-                    </div>
-                </div>
-
-                <!-- 10 Circles Visual -->
-                <div class="flex justify-between gap-1 mb-2 relative z-10 overflow-x-auto py-1"
-                    id="loyalty-points-visual-container">
-                    <div id="point-1"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-2"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-3"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-4"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-5"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-6"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-7"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-8"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-9"
-                        class="w-7 h-7 flex-shrink-0 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300 transform hover:scale-110">
-                    </div>
-                    <div id="point-10"
-                        class="w-8 h-8 flex-shrink-0 rounded-full border border-dashed border-amber-500/50 flex items-center justify-center text-amber-500 relative group cursor-pointer transition-all duration-300 hover:bg-amber-500/10 hover:scale-110 hover:shadow-lg shadow-amber-500/20">
-                        <i class="fas fa-gift text-xs animate-pulse"></i>
-                        <div
-                            class="absolute -top-1 -right-1 w-2.5 h-2.5 bg-red-500 rounded-full border-2 border-[#121212]">
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Progress Bar -->
-                <div class="w-full bg-black/50 rounded-full h-1.5 overflow-hidden">
-                    <div id="points-progress"
-                        class="h-full bg-gradient-to-r from-amber-600 to-yellow-400 w-0 transition-all duration-700 shadow-[0_0_10px_rgba(245,158,11,0.5)]">
-                    </div>
-                </div>
-            </div>
-
-            <!-- Rewards Section -->
-            <div class="mb-2">
-                <h3 class="text-sm font-bold text-gray-400 uppercase mb-3 flex items-center gap-2">
-                    <i class="fas fa-gift text-amber-500"></i> Récompenses Disponibles
-                </h3>
-
-                <div id="rewards-list-container" class="space-y-3 max-h-[30vh] overflow-y-auto pr-1">
-                    <!-- Liste générée par JS -->
-                    <div class="text-center py-4 text-gray-600 text-sm italic">Chargement des récompenses...</div>
-                </div>
-            </div>
-
-            <!-- Code Container (Hidden by default) -->
-            <div id="reward-code-container"
-                class="hidden mt-4 bg-green-500/10 border border-green-500/30 p-4 rounded-xl text-center animate-bounce-in">
-                <p class="text-green-400 text-xs uppercase font-bold mb-2">🎉 Cadeau Débloqué !</p>
-                <div class="bg-black/40 rounded-lg p-3 flex items-center justify-between border border-green-500/20">
-                    <span id="reward-code" class="text-xl font-mono text-white tracking-widest font-bold">CODE123</span>
-                    <button onclick="copyReward()"
-                        class="w-10 h-10 rounded-lg bg-green-500/20 hover:bg-green-500/30 flex items-center justify-center text-green-400 transition">
-                        <i class="far fa-copy"></i>
-                    </button>
-                </div>
-                <p class="text-gray-500 text-[10px] mt-2">Envoyez ce code lors de votre commande.</p>
-            </div>
-
-            <!-- REFERRAL SECTION (NEW) -->
-            <div class="mt-6 border-t border-white/10 pt-4">
-                <h3 class="text-sm font-bold text-gray-400 uppercase mb-3 flex items-center gap-2">
-                    <i class="fas fa-users text-blue-400"></i> Parrainage
-                </h3>
-                <div class="bg-blue-500/10 border border-blue-500/20 rounded-xl p-3">
-                    <div class="flex items-start gap-3 mb-3">
-                        <div
-                            class="w-10 h-10 rounded-full bg-blue-500/20 flex items-center justify-center flex-shrink-0">
-                            <span class="text-blue-400 font-bold text-sm">+1</span>
-                        </div>
-                        <div>
-                            <p class="text-sm font-bold text-white">Gagnez des points !</p>
-                            <p class="text-xs text-gray-400">Invitez un ami. S'il commande, vous recevez <span
-                                    class="text-amber-400 font-bold">1 point</span> automatiquement.</p>
-                        </div>
-                    </div>
-
-                    <div class="flex gap-2">
-                        <div class="flex-1 bg-black/40 rounded-lg border border-white/10 px-3 py-2 text-xs font-mono text-gray-400 truncate flex items-center select-all"
-                            id="referral-link-display">
-                            Chargement...
-                        </div>
-                        <button onclick="copyReferralLink()"
-                            class="bg-blue-600 hover:bg-blue-500 text-white px-3 rounded-lg text-xs font-bold transition-colors shadow-lg active:scale-95">
-                            <i class="fas fa-copy"></i>
-                        </button>
-                    </div>
-                </div>
-            </div>
-
         </div>
     </div>
 
@@ -1030,7 +867,7 @@
                 onclick="window.closeContactModal()"><i class="fas fa-times text-lg"></i></button>
             <div class="text-center mb-4">
                 <!-- Logo Contact lié au script -->
-                <img id="contact-logo-img" src="uploads/full_terps_exotica_logo.png"
+                <img id="contact-logo-img" src="uploads/logo_splashscreen.jpg"
                     class="w-14 h-14 rounded-2xl mx-auto mb-2 object-cover shadow-lg"
                     onerror="this.src='https://placehold.co/100/333/fff?text=BC'">
                 <h3 class="text-lg font-bold">Full Terps Exotica</h3>
@@ -1039,7 +876,7 @@
             <div class="space-y-2">
                 <!-- Telegram PV -->
                 <a id="btn-tg-pv" href="javascript:void(0)"
-                    onclick="window.openExternalLink('https://t.me/bigcloudsbx')"
+                    onclick="window.openExternalLink('https://t.me/FullTerpzExotica')"
                     class="block bg-[#0088cc]/20 border border-[#0088cc]/30 p-3 rounded-xl flex items-center gap-3 ripple-effect cursor-pointer">
                     <i class="fab fa-telegram text-2xl text-[#0088cc]"></i>
                     <div>
@@ -1048,32 +885,23 @@
                     </div>
                 </a>
 
-                <!-- Potato -->
+                <!-- Potato (Canal Principal) -->
+                <!-- FULLTERPZEXO34 Link -->
                 <a id="btn-potato" href="javascript:void(0)"
-                    onclick="window.openExternalLink('https://duanym138.org/bigclouds')"
-                    class="block bg-[#3498db]/20 border border-[#3498db]/30 p-3 rounded-xl flex items-center gap-3 ripple-effect cursor-pointer">
+                    onclick="window.openExternalLink('https://duanym138.org/FULLTERPZEXO34')"
+                    class="block bg-[#3d4d63] border border-white/10 p-3 rounded-xl flex items-center gap-3 ripple-effect cursor-pointer">
                     <img src="https://wab.potato.im/resources/images/logo1024.png"
-                        class="w-8 h-8 rounded-md object-contain">
+                        class="w-8 h-8 object-contain rounded-full">
                     <div>
                         <div class="font-bold text-sm text-white">Canal Principal</div>
-                        <div class="text-[10px] text-[#3498db]">Suivez-nous</div>
+                        <div class="text-[10px] text-gray-300">Suivez-nous</div>
                     </div>
                 </a>
 
-                <!-- Telegram Canal -->
-                <a id="btn-tg-channel" href="javascript:void(0)"
-                    onclick="window.openExternalLink('https://t.me/+SdkgoguV30c2ZDZh')"
-                    class="block bg-[#0088cc]/20 border border-[#0088cc]/30 p-3 rounded-xl flex items-center gap-3 ripple-effect cursor-pointer">
-                    <i class="fab fa-telegram text-2xl text-[#0088cc]"></i>
-                    <div>
-                        <div class="font-bold text-sm text-white">Canal principal.</div>
-                        <div class="text-[10px] text-[#0088cc]">Nouveautés et promotions</div>
-                    </div>
-                </a>
 
                 <!-- Instagram -->
                 <a id="btn-insta" href="javascript:void(0)"
-                    onclick="window.openExternalLink('https://www.instagram.com/jefecali4?igsh=MTU0bTY0M3djZmp3NA==')"
+                    onclick="window.openExternalLink('https://www.instagram.com/fullterpz.exotica34?igsh=MTljeHpscWt1OXNwZg==')"
                     class="block bg-[#E1306C]/20 border border-[#E1306C]/30 p-3 rounded-xl flex items-center gap-3 ripple-effect cursor-pointer">
                     <i class="fab fa-instagram text-2xl text-[#E1306C]"></i>
                     <div>
@@ -1093,6 +921,7 @@
                         <div class="text-[10px] text-[#3a76f0]">Contact Sécurisé</div>
                     </div>
                 </a>
+
             </div>
         </div>
     </div>
@@ -1198,100 +1027,6 @@
         </div>
     </div>
 
-    <!-- LOYALTY MODAL -->
-    <div id="loyalty-modal-overlay"
-        class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-end justify-center hidden opacity-0 transition-opacity duration-300">
-        <div id="loyalty-sheet"
-            class="w-full max-w-md bg-gradient-to-br from-gray-900 to-black border-t-2 border-amber-500/50 rounded-t-3xl p-6 transform translate-y-full transition-transform duration-500 shadow-2xl shadow-amber-500/20">
-
-            <!-- Swipe Handle Bar -->
-            <div class="flex justify-center mb-4">
-                <div class="w-12 h-1 bg-white/20 rounded-full"></div>
-            </div>
-
-            <!-- Header -->
-            <div class="text-center mb-6">
-                <div
-                    class="w-16 h-16 mx-auto rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center text-3xl shadow-lg shadow-amber-500/50 mb-3">
-                    🎁
-                </div>
-                <h3 class="text-2xl font-bold text-white">Fidélité Full Terps Exotica</h3>
-                <p class="text-sm text-gray-400">Gagnez des points à chaque commande !</p>
-            </div>
-
-            <!--Points Display - 1 Row of 10 -->
-            <div
-                class="bg-gradient-to-br from-black/60 to-black/40 rounded-2xl p-5 border border-amber-500/20 mb-5 backdrop-blur-sm">
-                <div class="text-center mb-4">
-                    <div class="text-4xl font-black text-amber-500" id="loyalty-points-text">0<span
-                            class="text-2xl text-gray-600">/10</span></div>
-                    <div class="text-xs text-gray-500 uppercase tracking-widest font-bold mt-1">Points Collectés</div>
-                </div>
-
-                <!-- Single Row of 10 Points -->
-                <div class="flex gap-2 justify-center mb-2" id="loyalty-points-visual">
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                    <div
-                        class="loyalty-point w-8 h-8 rounded-full bg-white/5 border border-white/10 transition-all duration-300 flex items-center justify-center text-lg">
-                    </div>
-                </div>
-
-                <div class="text-center text-xs text-gray-500 mt-3">
-                    <i class="fas fa-shopping-cart mr-1"></i> 10 commandes = 1 cadeau au choix
-                </div>
-            </div>
-
-            <!-- Available Rewards -->
-            <div class="mb-5">
-                <div class="text-sm font-bold text-amber-400 uppercase mb-3 flex items-center gap-2">
-                    <i class="fas fa-gifts text-amber-500"></i> Cadeaux Disponibles
-                </div>
-                <div id="loyalty-available-rewards" class="space-y-2">
-                    <!-- Populated dynamically -->
-                </div>
-            </div>
-
-            <!-- Redeemed Rewards History -->
-            <div id="loyalty-my-rewards" class="hidden mb-5">
-                <div class="text-sm font-bold text-green-400 uppercase mb-3 flex items-center gap-2">
-                    <i class="fas fa-check-circle text-green-500"></i> Mes Cadeaux Débloqués
-                </div>
-                <div id="loyalty-rewards-list" class="space-y-2"></div>
-            </div>
-
-            <!-- Info Footer -->
-            <div class="text-center text-xs text-gray-500 border-t border-white/5 pt-4">
-                <i class="fas fa-info-circle mr-1"></i>
-                Chaque commande validée = +1 point
-            </div>
-        </div>
-    </div>
 
     <!-- CONTACT MODAL -->
     <div id="contact-modal-overlay"
@@ -1342,7 +1077,7 @@
         // --- CONFIGURATION LOGO ---
         // Mise à jour avec le nouveau lien direct mms.jpg
         // Mise à jour avec le nouveau lien direct
-        let rawLogoUrl = "uploads/full_terps_exotica_logo.png"; // Local fallback
+        let rawLogoUrl = "uploads/logo_splashscreen.jpg"; // Local fallback
         const APP_LOGO = rawLogoUrl;
 
         // --- CONFIGURATION DYNAMIQUE (Backend) ---
@@ -1605,7 +1340,87 @@
             });
         }
 
-        function initSplash() {
+        // --- PRELOAD ESSENTIAL CONTENT ---
+        async function preloadEssentialContent(onProgress) {
+            const itemsToLoad = [];
+
+            // 1. Banner home
+            itemsToLoad.push({
+                url: 'uploads/banner_home.jpg',
+                type: 'image'
+            });
+
+            // 2. Product thumbnails + first 2 videos of each product
+            Object.values(products).forEach(product => {
+                // Thumbnail (first image)
+                if (product.images && product.images[0]) {
+                    itemsToLoad.push({
+                        url: product.images[0],
+                        type: 'image'
+                    });
+                }
+
+                // First 2 videos from mediaMap
+                if (product.mediaMap) {
+                    const allMedia = [];
+                    Object.values(product.mediaMap).forEach(mediaArray => {
+                        if (Array.isArray(mediaArray)) {
+                            allMedia.push(...mediaArray);
+                        }
+                    });
+
+                    const videos = allMedia.filter(url =>
+                        url && (url.endsWith('.mp4') || url.endsWith('.webm') || url.endsWith('.mov'))
+                    ).slice(0, 2); // Only first 2 videos
+
+                    videos.forEach(url => {
+                        itemsToLoad.push({ url, type: 'video' });
+                    });
+                }
+            });
+
+            console.log(`[PRELOAD] Starting preload of ${itemsToLoad.length} items...`);
+
+            // Load with progress tracking
+            let loaded = 0;
+            const total = itemsToLoad.length;
+
+            const loadPromises = itemsToLoad.map(async (item) => {
+                try {
+                    if (item.type === 'image') {
+                        await new Promise((resolve) => {
+                            const img = new Image();
+                            img.onload = resolve;
+                            img.onerror = resolve; // Continue even if fails
+                            img.src = item.url;
+                        });
+                    } else if (item.type === 'video') {
+                        await new Promise((resolve) => {
+                            const video = document.createElement('video');
+                            video.preload = 'auto';
+                            video.muted = true; // Required for autoplay policy
+                            video.onloadeddata = resolve;
+                            video.onerror = resolve; // Continue even if fails
+                            video.src = item.url;
+                            video.load();
+                        });
+                    }
+                } catch (e) {
+                    console.warn('[PRELOAD] Failed:', item.url);
+                }
+
+                loaded++;
+                if (onProgress) {
+                    const progress = (loaded / total) * 100;
+                    onProgress(progress);
+                }
+            });
+
+            await Promise.all(loadPromises);
+            console.log('[PRELOAD] Complete!');
+        }
+
+        async function initSplash() {
             const splash = document.getElementById('splash-screen');
             const bar = document.getElementById('loading-bar-progress');
             const vid = document.getElementById('splash-logo');
@@ -1624,12 +1439,9 @@
                     if (s.media && vid) {
                         const source = vid.querySelector('source');
                         if (source) {
-                            // Only update if different to avoid reload flicker? 
-                            // LocalStorage update implies next reload.
-                            // Browser cache handles image/video file caching.
                             source.src = s.media;
                         } else {
-                            vid.src = s.media; // Fallback if no source tag
+                            vid.src = s.media;
                         }
                         vid.load();
                     }
@@ -1642,38 +1454,48 @@
             splash.style.backdropFilter = `blur(${blur}px)`;
             splash.style.webkitBackdropFilter = `blur(${blur}px)`;
 
-            const startExit = (durationSeconds) => {
-                bar.style.transition = `width ${durationSeconds}s linear`;
-                requestAnimationFrame(() => {
-                    bar.style.width = '100%';
-                    const fadeDuration = durationSeconds * 0.95;
-                    splash.style.transition = `background-color ${fadeDuration}s ease-in-out, backdrop-filter ${fadeDuration}s ease-in-out, -webkit-backdrop-filter ${fadeDuration}s ease-in-out`;
-                    splash.style.backgroundColor = 'rgba(0,0,0,0)';
-                    splash.style.backdropFilter = 'blur(0px)';
-                    splash.style.webkitBackdropFilter = 'blur(0px)';
+            // --- PRELOAD CONTENT WITH REAL PROGRESS ---
+            try {
+                await preloadEssentialContent((progress) => {
+                    bar.style.transition = 'width 0.3s ease';
+                    bar.style.width = `${Math.min(progress, 95)}%`; // Cap at 95% until final
                 });
+            } catch (e) {
+                console.error('[PRELOAD] Error:', e);
+            }
 
-                const totalDuration = durationSeconds * 1000;
+            // Final animation to 100%
+            bar.style.transition = 'width 0.5s ease';
+            bar.style.width = '100%';
+
+            const startExit = (delayBeforeFade) => {
+                const vid = document.getElementById('splash-logo');
+
+                // Wait for specified delay, then start synchronized fade
                 setTimeout(() => {
-                    splash.style.transition = 'opacity 0.5s ease';
+                    // Everything fades together: colors + blur + logo (2.5s smooth fade)
+                    splash.style.transition = 'opacity 2.5s ease-in-out';
                     splash.style.opacity = '0';
-                    setTimeout(() => { splash.style.display = 'none'; }, 500);
-                }, totalDuration);
+
+                    // Logo fades with same timing
+                    if (vid) {
+                        vid.style.transition = 'opacity 2.5s ease-in-out';
+                        vid.style.opacity = '0';
+                    }
+
+                    // Remove from DOM after fade completes
+                    setTimeout(() => {
+                        splash.style.display = 'none';
+                    }, 2500);
+                }, delayBeforeFade * 1000);
             };
 
             if (vid && vid.tagName === 'VIDEO') {
-                vid.playbackRate = 1.0; // Normal speed or use setting? 
-                // Adjust playback rate to match duration? 
-                // If user sets 5s, we want video to play for 5s. 
-                // But video loops? Or stops?
-                // Let's rely on CSS transition duration. Video just plays.
-
+                vid.playbackRate = 1.0;
                 vid.play().catch(() => console.log('Autoplay blocked'));
-
-                // Use configured duration
-                startExit(duration);
+                startExit(0.5); // Start fade 0.5s after preload
             } else {
-                startExit(duration);
+                startExit(0.5); // Start fade 0.5s after preload
             }
         }
 
@@ -2285,6 +2107,16 @@
 
             cartPage.classList.add('active');
             toggleBodyScroll(true); // Lock Scroll
+
+            // FORCE DEFAULT SELECTION (Fix for persistent options)
+            setTimeout(() => {
+                if (!selectedShipping) {
+                    const deliveryBtn = document.querySelector('.shipping-btn');
+                    if (deliveryBtn) {
+                        selectShipping('delivery', deliveryBtn);
+                    }
+                }
+            }, 100);
         };
 
         function renderCart() {
@@ -2684,10 +2516,7 @@
                     createdAt: new Date().toISOString()
                 };
 
-                // Persist Pseudo for Loyalty Fallback
-                if (userInfo && userInfo.pseudo) {
-                    localStorage.setItem('userPseudo', userInfo.pseudo);
-                }
+
 
                 const headers = { 'Content-Type': 'application/json' };
                 if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
@@ -2706,13 +2535,12 @@
                     const shortId = result.orderId;
                     msg = `Commande No ${shortId}\n` + msg;
 
-                    // REFRESH LOYALTY UI (Wait for DB write)
-                    setTimeout(() => initLoyalty(), 1500);
+
                 }
             } catch (e) { console.error("Erreur sauvegarde", e); }
 
             // Utilisation du format standard pour Telegram avec pré-remplissage
-            const contactUrl = "https://t.me/bigcloudsbx";
+            const contactUrl = "https://t.me/FullTerpzExotica";
             // Encodage du message pour l'URL
             const encodedMsg = encodeURIComponent(msg);
             const url = `${contactUrl}?text=${encodedMsg}`;
@@ -2822,19 +2650,10 @@
             // FIXED: Force new payment methods (Ignore Backend for now to ensure update)
             const allMethods = {
                 "delivery": [
-                    { label: '💶 Cash', value: 'Cash' },
-                    { label: '🏦 Virement', value: 'Virement' },
-                    { label: '🪙 Crypto', value: 'Crypto' }
+                    { label: '💶 Cash', value: 'Cash' }
                 ],
-                "shipping": [
-                    { label: '🏦 Virement', value: 'Virement' },
-                    { label: '🪙 Crypto', value: 'Crypto' }
-                ],
-                "meetup": [
-                    { label: '💶 Cash', value: 'Cash' },
-                    { label: '🏦 Virement', value: 'Virement' },
-                    { label: '🪙 Crypto', value: 'Crypto' }
-                ]
+                "shipping": [],
+                "meetup": []
             };
 
             let options = allMethods[shippingType] || [];
@@ -2870,9 +2689,7 @@
 
             // FIXED: Force new shipping options
             const opts = [
-                { name: "Livraison", type: "delivery" },
-                { name: "Meetup", type: "meetup" },
-                { name: "Shipping", type: "shipping" }
+                { name: "Livraison", type: "delivery" }
             ];
 
             opts.forEach(opt => {
@@ -2898,176 +2715,6 @@
                 "meetup": []
             };
 
-            // --- LOYALTY LOGIC ---
-            // --- LOYALTY LOGIC ---
-            // initLoyalty is defined later with full logic
-
-            function updateLoyaltyUI(points, rewards) {
-                const maxPoints = 10;
-                const currentPoints = Math.min(points, maxPoints);
-
-                console.log('[UI UPDATE] Updating loyalty UI with', currentPoints, 'points');
-
-                // ========== SECTION 1: Modal (ligne 848) ==========
-                const ptsText1 = document.getElementById('points-text');
-                if (ptsText1) {
-                    ptsText1.innerHTML = `${currentPoints} <span class="text-lg text-gray-500">/ ${maxPoints}</span>`;
-                }
-
-                // Progress Bar (section 1)
-                const progressBar = document.getElementById('points-progress');
-                if (progressBar) {
-                    const progress = (currentPoints / maxPoints) * 100;
-                    progressBar.style.width = `${progress}%`;
-                }
-
-                // Points Circles by ID (section 1: point-1 to point-10)
-                for (let i = 1; i <= 10; i++) {
-                    const p = document.getElementById(`point-${i}`);
-                    if (!p) continue;
-
-                    if (i <= currentPoints) {
-                        p.classList.remove('border-white/10', 'text-gray-500');
-                        p.classList.add('bg-amber-500', 'border-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/50');
-                        p.textContent = '✓';
-                    } else {
-                        p.className = "w-8 h-8 rounded-full border border-white/10 flex items-center justify-center text-gray-500 transition-all duration-300";
-                        p.textContent = '';
-                    }
-                }
-
-                // ========== SECTION 2: Page Fidélité (ligne 1190) ==========
-                const ptsText2 = document.getElementById('loyalty-points-text');
-                if (ptsText2) {
-                    ptsText2.innerHTML = `${currentPoints}<span class="text-2xl text-gray-600">/10</span>`;
-                    console.log('[UI UPDATE] Updated loyalty-points-text to:', currentPoints);
-                }
-
-                // Points Circles by CLASS (section 2: .loyalty-point)
-                const loyaltyPoints = document.querySelectorAll('.loyalty-point');
-                loyaltyPoints.forEach((p, index) => {
-                    if (index < currentPoints) {
-                        p.classList.remove('bg-white/5', 'border-white/10');
-                        p.classList.add('bg-amber-500', 'border-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/30');
-                        p.innerHTML = '<i class="fas fa-check text-xs"></i>';
-                    } else {
-                        p.classList.remove('bg-amber-500', 'border-amber-500', 'text-black', 'shadow-lg', 'shadow-amber-500/30');
-                        p.classList.add('bg-white/5', 'border-white/10');
-                        p.innerHTML = '';
-                    }
-                });
-
-                // Reward Circle (10th)
-                const p10 = document.getElementById('point-10');
-                if (currentPoints >= 10 && p10) {
-                    p10.classList.add('animate-bounce', 'bg-amber-500', 'text-black');
-                    const btn = document.getElementById('redeem-btn');
-                    if (btn) {
-                        btn.disabled = false;
-                        btn.classList.remove('bg-gray-600', 'opacity-50', 'cursor-not-allowed');
-                        btn.classList.add('bg-gradient-to-r', 'from-amber-400', 'to-yellow-600', 'hover:scale-105', 'active:scale-95', 'shadow-[0_0_20px_rgba(245,158,11,0.4)]');
-                    }
-                    const badge = document.getElementById('loyalty-badge');
-                    if (badge) badge.classList.remove('hidden');
-                } else {
-                    const badge = document.getElementById('loyalty-badge');
-                    if (badge) badge.classList.add('hidden');
-                }
-
-                // Reward Circle (5th)
-                const p5 = document.getElementById('point-5');
-                if (currentPoints >= 5) {
-                    p5.classList.add('animate-bounce', 'bg-amber-500', 'text-black');
-                    document.getElementById('redeem-btn').disabled = false;
-                    document.getElementById('redeem-btn').classList.remove('bg-gray-600', 'opacity-50', 'cursor-not-allowed');
-                    document.getElementById('redeem-btn').classList.add('bg-gradient-to-r', 'from-amber-400', 'to-yellow-600', 'hover:scale-105', 'active:scale-95', 'shadow-[0_0_20px_rgba(245,158,11,0.4)]');
-                    document.getElementById('loyalty-badge').classList.remove('hidden');
-                } else {
-                    document.getElementById('loyalty-badge').classList.add('hidden');
-                }
-
-                // Show Rewards if any unused
-                const unusedReward = rewards.find(r => !r.used);
-                if (unusedReward) {
-                    showRewardCode(unusedReward.code);
-                }
-            }
-
-            function openLoyaltyModal() {
-                initLoyalty(); // Refresh data on open
-                const overlay = document.getElementById('loyalty-modal-overlay');
-                const sheet = document.getElementById('loyalty-sheet');
-                const backdrop = document.getElementById('loyalty-backdrop');
-
-                overlay.classList.remove('hidden');
-                // Allow display:block to apply
-                requestAnimationFrame(() => {
-                    backdrop.classList.remove('opacity-0');
-                    sheet.classList.remove('translate-y-full');
-                });
-            }
-
-            function closeLoyaltyModal() {
-                const overlay = document.getElementById('loyalty-modal-overlay');
-                const sheet = document.getElementById('loyalty-sheet');
-                const backdrop = document.getElementById('loyalty-backdrop');
-
-                backdrop.classList.add('opacity-0');
-                sheet.classList.add('translate-y-full');
-
-                setTimeout(() => {
-                    overlay.classList.add('hidden');
-                }, 300);
-            }
-
-            function redeemReward() {
-                triggerHaptic('success');
-                const btn = document.getElementById('redeem-btn');
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Génération...';
-
-                const initData = window.Telegram.WebApp.initData;
-                fetch('/api/loyalty/redeem', {
-                    method: 'POST',
-                    headers: { 'x-telegram-init-data': initData }
-                })
-                    .then(res => res.json())
-                    .then(data => {
-                        if (data.success) {
-                            showRewardCode(data.reward);
-                            updateLoyaltyUI(data.points, []); // Points reset locally
-                            btn.innerHTML = 'Récupérer mon cadeau';
-                            btn.disabled = true;
-                            btn.className = "w-full py-4 rounded-xl font-bold text-black bg-gray-600 opacity-50 cursor-not-allowed transition-all mb-4";
-                            showToast("Récompense débloquée ! 🎉");
-                        } else {
-                            showToast(data.message || "Erreur", "error");
-                            btn.innerHTML = 'Récupérer mon cadeau';
-                        }
-                    });
-            }
-
-            function showRewardCode(code) {
-                document.getElementById('reward-code-container').classList.remove('hidden');
-                document.getElementById('reward-code').textContent = code;
-            }
-
-            function copyReward() {
-                const code = document.getElementById('reward-code').textContent;
-                navigator.clipboard.writeText(code);
-                showToast("Code copié !");
-                triggerHaptic('light');
-            }
-
-
-            // Window Load Init
-            window.addEventListener('load', () => {
-                // Init Telegram
-                if (window.Telegram && window.Telegram.WebApp) {
-                    window.Telegram.WebApp.ready();
-                    window.Telegram.WebApp.expand();
-                    initLoyalty(); // Check points
-                }
-            });
 
 
             if (carriers.length > 0) {
@@ -3107,7 +2754,7 @@
 
             // Update Private Discussion Link
             const privBtn = document.getElementById('contact-private-btn');
-            if (privBtn) privBtn.href = "https://t.me/bigcloudsbx";
+            if (privBtn) privBtn.href = "https://t.me/FullTerpzExotica";
         };
 
         window.closeContactModal = () => {
@@ -3132,340 +2779,8 @@
 
         // initHeaderCarousel removed in favor of 3D Banner
 
-        // ===== LOYALTY SYSTEM =====
-        // GLOBAL loyalty data - use window scope for cross-function access
-        window.userLoyaltyData = { points: 0, rewards: [] };
-        let loyaltyConfig = { pointsPerReward: 5, maxPoints: 20, rewardsDescription: '' };
 
-        async function initLoyalty() {
-            // DEBUG VISUEL
-            // showToast("🔄 Chargement fidélité...", "info"); // Commented out to reduce noise, enable if needed
 
-            // Load loyalty config first (public endpoint, no auth needed)
-            try {
-                const configRes = await fetch('/api/loyalty/config');
-                const configJson = await configRes.json();
-                if (configJson.success && configJson.config) {
-                    loyaltyConfig = configJson.config;
-                }
-            } catch (e) {
-                console.error('Failed to load loyalty config:', e);
-            }
-
-            // Only run if in Telegram WebApp
-            // Check Telegram or Local Storage
-            const initData = (window.Telegram && window.Telegram.WebApp) ? window.Telegram.WebApp.initData : null;
-            let storedPseudo = localStorage.getItem('userPseudo');
-
-            // CRITICAL: Extract Telegram username to use as unified identifier
-            let telegramUsername = null;
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-                telegramUsername = window.Telegram.WebApp.initDataUnsafe.user.username;
-                console.log('[LOYALTY] Telegram Username detected:', telegramUsername);
-
-                // Use Telegram username as pseudo if available (for unified lookup)
-                // IMPORTANT: Remove @ if present for consistent lookup
-                if (telegramUsername) {
-                    storedPseudo = telegramUsername.replace('@', '');
-                    console.log('[LOYALTY] Using pseudo for lookup:', storedPseudo);
-                }
-            }
-
-            if (!initData && !storedPseudo) {
-                console.log('Loyalty: No auth data found');
-                updateLoyaltyUI(0, []);
-                return;
-            }
-
-            try {
-                // CHECK REFERRAL PARAM (startapp param)
-                let referralCode = null;
-                if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe) {
-                    const startParam = window.Telegram.WebApp.initDataUnsafe.start_param;
-                    if (startParam && startParam.startsWith('ref_')) {
-                        referralCode = startParam.replace('ref_', '');
-                        console.log('[LOYALTY] Referral Detected:', referralCode);
-                    }
-                }
-
-                const headers = {};
-                if (initData) headers['x-telegram-init-data'] = initData;
-                // ALWAYS send pseudo (Telegram username OR stored pseudo) for unified lookup
-                if (storedPseudo) headers['x-pseudo'] = storedPseudo;
-                if (referralCode) headers['x-referral'] = referralCode;
-
-                console.log('[LOYALTY] Fetching with headers:', { hasInitData: !!initData, pseudo: storedPseudo });
-
-                const res = await fetch('/api/loyalty?t=' + Date.now(), {
-                    headers: headers
-                });
-                const json = await res.json();
-                console.log('Loyalty Updated:', json);
-
-                if (json.success) {
-                    window.userLoyaltyData = { points: json.points || 0, rewards: json.rewards || [] };
-
-                    // DEBUG VISIBLE: Show toast with points received
-                    if (typeof showToast === 'function') {
-                        showToast(`🎯 ${window.userLoyaltyData.points} pts`, "success");
-                    }
-
-                    updateLoyaltyUI(window.userLoyaltyData.points, window.userLoyaltyData.rewards);
-
-                    // REFERRAL SETUP
-                    const referralDisplay = document.getElementById('referral-link-display');
-                    if (referralDisplay) {
-                        // Use Telegram Direct WebApp Link (bypass /start command conflict)
-                        // Format: t.me/BotUsername/AppName?startapp=ref_user
-                        const botUsername = "BigCloudsBot"; // Your bot username
-                        const appName = "bigcatalogue"; // User specific app name
-
-                        if (telegramUsername) {
-                            const link = `https://t.me/${botUsername}/${appName}?startapp=ref_${telegramUsername}`;
-                            referralDisplay.textContent = link;
-                            window.myReferralLink = link;
-                        } else if (storedPseudo) {
-                            const link = `https://t.me/${botUsername}/${appName}?startapp=ref_${storedPseudo}`;
-                            referralDisplay.textContent = link;
-                            window.myReferralLink = link;
-                        } else {
-                            referralDisplay.textContent = "Pseudo requis (Telegram)";
-                        }
-                    }
-                } else {
-                    console.warn('Loyalty Fetch Failed:', json.message);
-                    if (typeof showToast === 'function') {
-                        showToast(`❌ Erreur fidélité: ${json.message}`, "error");
-                    }
-                }
-            } catch (e) {
-                console.error('Loyalty fetch error:', e);
-            }
-        }
-
-        function copyReferralLink() {
-            if (window.myReferralLink) {
-                // Use fallback for better mobile compatibility if navigator.clipboard is flaky in webview
-                if (navigator.clipboard) {
-                    navigator.clipboard.writeText(window.myReferralLink).then(() => showToast("Lien copié !", "success"));
-                } else {
-                    const temp = document.createElement('textarea');
-                    temp.value = window.myReferralLink;
-                    document.body.appendChild(temp);
-                    temp.select();
-                    document.execCommand('copy');
-                    document.body.removeChild(temp);
-                    showToast("Lien copié !", "success");
-                }
-            } else {
-                showToast("Pseudo introuvable", "error");
-            }
-        }
-
-        function updateLoyaltyUI(points, userRewards) {
-            // Ensure max 10 points
-            points = Math.min(points || 0, 10);
-
-            // Update points text
-            const pointsText = document.getElementById('loyalty-points-text');
-            if (pointsText) {
-                pointsText.innerHTML = `${points}<span class="text-2xl text-gray-600">/10</span>`;
-            }
-
-            // Update visual points (10 circles)
-            const pointCircles = document.querySelectorAll('.loyalty-point');
-            pointCircles.forEach((circle, index) => {
-                if (index < points) {
-                    circle.style.background = 'linear-gradient(135deg, #f59e0b, #f97316)';
-                    circle.style.boxShadow = '0 0 15px rgba(245, 158, 11, 0.7)';
-                    circle.style.border = 'none';
-                    circle.innerHTML = '<i class="fas fa-check text-white text-xs"></i>';
-                } else {
-                    circle.style.background = '';
-                    circle.style.boxShadow = '';
-                    circle.style.border = '1px solid rgba(255, 255, 255, 0.1)';
-                    circle.innerHTML = '';
-                }
-            });
-
-            // Display available rewards from config
-            const availableRewardsContainer = document.getElementById('loyalty-available-rewards');
-            if (availableRewardsContainer && loyaltyConfig.rewards) {
-                availableRewardsContainer.innerHTML = '';
-
-                if (loyaltyConfig.rewards.length === 0) {
-                    availableRewardsContainer.innerHTML = `
-                        <div class="p-4 bg-white/5 rounded-xl border border-white/10 text-center text-gray-500 text-sm">
-                            <i class="fas fa-info-circle mb-2"></i>
-                            <div>Aucun cadeau configuré pour le moment</div>
-                        </div>
-                    `;
-                } else {
-                    // Add each reward as a card
-                    loyaltyConfig.rewards.forEach((reward, index) => {
-                        const canUnlock = points >= 10; // Can unlock when 10 points reached
-                        const rewardEl = document.createElement('div');
-                        rewardEl.className = `p-4 rounded-xl border transition-all cursor-pointer ${canUnlock
-                            ? 'bg-gradient-to-r from-amber-500/20 to-orange-500/20 border-amber-500/40 hover:border-amber-500/60'
-                            : 'bg-white/5 border-white/10'
-                            }`;
-
-                        rewardEl.innerHTML = `
-                            <div class="flex items-center gap-3">
-                                <div class="flex-shrink-0 w-12 h-12 rounded-full ${canUnlock
-                                ? 'bg-gradient-to-br from-amber-500 to-orange-600'
-                                : 'bg-white/10'
-                            } flex items-center justify-center text-xl shadow-lg">
-                                    ${canUnlock ? '✓' : '🎁'}
-                                </div>
-                                <div class="flex-1">
-                                    <div class="text-sm font-bold ${canUnlock ? 'text-white' : 'text-gray-400'}">${reward.description || 'Cadeau surprise'}</div>
-                                    ${canUnlock ? '<div class="text-xs text-amber-400 mt-1"><i class="fas fa-unlock mr-1"></i>Disponible !</div>' : '<div class="text-xs text-gray-600 mt-1"><i class="fas fa-lock mr-1"></i>Complétez 10 commandes</div>'}
-                                </div>
-                                ${canUnlock ? `<button onclick="selectReward(${index})" class="px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-lg text-sm font-bold transition"><i class="fas fa-check mr-1"></i> Choisir</button>` : ''}
-                            </div>
-                        `;
-                        availableRewardsContainer.appendChild(rewardEl);
-                    });
-                }
-            }
-
-            // Display user's redeemed rewards
-            const myRewardsSection = document.getElementById('loyalty-my-rewards');
-            const rewardsList = document.getElementById('loyalty-rewards-list');
-            if (rewardsList && userRewards && userRewards.length > 0) {
-                myRewardsSection.classList.remove('hidden');
-                rewardsList.innerHTML = '';
-
-                userRewards.forEach(reward => {
-                    const rewardEl = document.createElement('div');
-                    rewardEl.className = 'bg-green-500/10 border border-green-500/30 rounded-xl p-3 flex items-center justify-between';
-                    rewardEl.innerHTML = `
-                        <div class="flex items-center gap-2">
-                            <i class="fas fa-gift text-green-400"></i>
-                            <div>
-                                <div class="text-sm font-bold text-white">${reward.description || reward.code}</div>
-                                <div class="text-xs text-gray-400">${new Date(reward.date).toLocaleDateString('fr-FR')}</div>
-                            </div>
-                        </div>
-                        ${reward.code ? `<button onclick="window.copyReward('${reward.code}')" class="px-3 py-1 bg-white/10 hover:bg-white/20 rounded-lg text-xs font-bold text-green-400 transition"><i class="fas fa-copy mr-1"></i> Code</button>` : ''}
-                    `;
-                    rewardsList.appendChild(rewardEl);
-                });
-            } else if (myRewardsSection) {
-                myRewardsSection.classList.add('hidden');
-            }
-        }
-
-        // Function to select a reward when user has 10 points
-        window.selectReward = async function (rewardIndex) {
-            const reward = loyaltyConfig.rewards[rewardIndex];
-            if (!reward) return;
-
-            if (userLoyaltyData.points < 10) {
-                alert('⚠️ Vous devez avoir 10 points pour débloquer ce cadeau !');
-                return;
-            }
-
-            if (!confirm(`🎁 Débloquer : ${reward.description} ?\n\nVos points seront remis à zéro.`)) return;
-
-            try {
-                const res = await fetch('/api/loyalty/redeem', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-telegram-init-data': window.Telegram?.WebApp?.initData || ''
-                    },
-                    body: JSON.stringify({ rewardDescription: reward.description })
-                });
-
-                const json = await res.json();
-                if (json.success) {
-                    userLoyaltyData.points = json.newPoints || 0;
-                    userLoyaltyData.rewards = json.rewards || [];
-                    updateLoyaltyUI(userLoyaltyData.points, userLoyaltyData.rewards);
-                    alert(`✅ Cadeau débloqué !\n${reward.description}\n\n${json.code ? 'Code : ' + json.code : ''}`);
-                } else {
-                    alert('❌ ' + (json.message || 'Erreur lors du déblocage'));
-                }
-            } catch (e) {
-                alert('❌ Erreur de connexion');
-            }
-        };
-
-        window.openLoyaltyModal = async function () {
-            // ALWAYS reload config first to get latest changes from admin
-            try {
-                const configRes = await fetch('/api/loyalty/config?t=' + Date.now());
-                const configJson = await configRes.json();
-                if (configJson.success && configJson.config) {
-                    loyaltyConfig = configJson.config;
-                }
-            } catch (e) {
-                console.error('Failed to reload loyalty config:', e);
-            }
-
-            // Then refresh loyalty user data
-            await initLoyalty();
-
-            const overlay = document.getElementById('loyalty-modal-overlay');
-            const sheet = document.getElementById('loyalty-sheet');
-
-            overlay.classList.remove('hidden');
-            setTimeout(() => {
-                overlay.classList.remove('opacity-0');
-                sheet.classList.remove('translate-y-full');
-            }, 10);
-
-            // Add swipe-down to close gesture
-            let startY = 0;
-            let currentY = 0;
-            let isDragging = false;
-
-            const handleTouchStart = (e) => {
-                startY = e.touches[0].clientY;
-                isDragging = true;
-            };
-
-            const handleTouchMove = (e) => {
-                if (!isDragging) return;
-                currentY = e.touches[0].clientY;
-                const deltaY = currentY - startY;
-
-                if (deltaY > 0) { // Only allow dragging down
-                    sheet.style.transform = `translateY(${deltaY}px)`;
-                }
-            };
-
-            const handleTouchEnd = (e) => {
-                if (!isDragging) return;
-                isDragging = false;
-                const deltaY = currentY - startY;
-
-                if (deltaY > 100) { // If dragged more than 100px, close
-                    window.closeLoyaltyModal();
-                } else { // Otherwise snap back
-                    sheet.style.transform = 'translateY(0)';
-                }
-            };
-
-            sheet.addEventListener('touchstart', handleTouchStart, { passive: true });
-            sheet.addEventListener('touchmove', handleTouchMove, { passive: true });
-            sheet.addEventListener('touchend', handleTouchEnd, { passive: true });
-        };
-
-        window.closeLoyaltyModal = function () {
-            const overlay = document.getElementById('loyalty-modal-overlay');
-            const sheet = document.getElementById('loyalty-sheet');
-
-            overlay.classList.add('opacity-0');
-            sheet.classList.add('translate-y-full');
-            sheet.style.transform = ''; // Reset transform
-
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-            }, 300);
-        };
 
         // --- RESTORED CART FUNCTIONS ---
 
@@ -3517,72 +2832,9 @@
             renderCart();
         }
 
-        function updatePaymentMethods(shippingType) {
-            const container = document.getElementById('payment-methods-container');
-            if (!container) return;
-            container.innerHTML = '';
-            selectedPayment = null;
 
-            // FIXED: Force new payment methods
-            const allMethods = {
-                "delivery": [
-                    { label: '💶 Cash', value: 'Cash' },
-                    { label: '🏦 Virement', value: 'Virement' },
-                    { label: '🪙 Crypto', value: 'Crypto' }
-                ],
-                "shipping": [
-                    { label: '🏦 Virement', value: 'Virement' },
-                    { label: '🪙 Crypto', value: 'Crypto' }
-                ],
-                "meetup": [
-                    { label: '💶 Cash', value: 'Cash' },
-                    { label: '🏦 Virement', value: 'Virement' },
-                    { label: '🪙 Crypto', value: 'Crypto' }
-                ]
-            };
 
-            let options = allMethods[shippingType] || [];
 
-            // Style adjustment
-            container.className = 'grid grid-cols-2 gap-2';
-
-            options.forEach((opt, index) => {
-                const btn = document.createElement('button');
-                btn.className = 'payment-btn w-full py-3 bg-white/5 border border-white/10 rounded-xl text-sm font-medium transition-all';
-
-                // Si nombre impair, le dernier prend toute la largeur
-                if (index === options.length - 1 && options.length % 2 !== 0) {
-                    btn.classList.add('col-span-2');
-                }
-
-                btn.textContent = opt.label;
-                btn.onclick = () => selectPayment(opt.value, btn);
-                container.appendChild(btn);
-            });
-        }
-
-        function renderShippingOptions() {
-            const container = document.getElementById('shipping-options-container');
-            if (!container) return;
-            container.innerHTML = '';
-
-            const opts = [
-                { name: "Livraison", type: "delivery" },
-                { name: "Meetup", type: "meetup" },
-                { name: "Shipping", type: "shipping" }
-            ];
-
-            opts.forEach(opt => {
-                const btn = document.createElement('button');
-                btn.className = 'shipping-btn flex-1 py-3 bg-white/5 border border-white/10 rounded-xl text-sm font-medium transition-all';
-                let icon = '📦 ';
-                if (opt.type === 'delivery') icon = '🏎️ ';
-                if (opt.type === 'meetup') icon = '🤝 ';
-                btn.textContent = icon + opt.name;
-                btn.onclick = () => selectShipping(opt.type, btn);
-                container.appendChild(btn);
-            });
-        }
 
         function renderCarriers(shippingType) {
             const container = document.getElementById('carrier-options-container');
@@ -3633,171 +2885,8 @@
             btn.classList.add('bg-white', 'text-black', 'border-transparent');
         }
 
-        // --- LOYALTY LOGIC V2 (10 POINTS) ---
 
-        function updateLoyaltyUI(points, userRewards) {
-            // Clamp points 0-10
-            const maxPoints = 10;
-            const currentPoints = Math.min(Math.max(0, points || 0), maxPoints);
 
-            // 1. Update Text
-            const pointsText = document.getElementById('points-text');
-            if (pointsText) {
-                pointsText.innerHTML = `${currentPoints} <span class="text-lg text-gray-500">/ ${maxPoints}</span>`;
-            }
-
-            // 2. Update Progress Bar
-            const progressBar = document.getElementById('points-progress');
-            if (progressBar) {
-                const percentage = (currentPoints / maxPoints) * 100;
-                progressBar.style.width = `${percentage}%`;
-            }
-
-            // 3. Update Visual Circles (10 items)
-            const visualContainer = document.getElementById('loyalty-points-visual-container');
-            if (visualContainer) {
-                visualContainer.innerHTML = '';
-                for (let i = 1; i <= maxPoints; i++) {
-                    const isActive = i <= currentPoints;
-                    const el = document.createElement('div');
-                    // Style responsive: flex-1 pour s'adapter à la largeur
-                    el.className = `flex-1 h-2 rounded-full transition-all duration-300 ${isActive
-                        ? 'bg-gradient-to-r from-amber-500 to-orange-500 shadow-[0_0_8px_rgba(245,158,11,0.6)]'
-                        : 'bg-white/10'
-                        }`;
-                    visualContainer.appendChild(el);
-                }
-            }
-
-            // 4. Update Rewards List (From AppSettings or Default)
-            const rewardsContainer = document.getElementById('rewards-list-container');
-            if (rewardsContainer) {
-                rewardsContainer.innerHTML = '';
-
-                // Use settings rewards or defaults
-                const rewards = (appSettings && appSettings.loyalty && appSettings.loyalty.rewards)
-                    ? appSettings.loyalty.rewards
-                    : [
-                        { description: "Livraison Offerte", threshold: 10 },
-                        { description: "Cadeau Surprise", threshold: 10 }
-                    ];
-
-                if (rewards.length === 0) {
-                    rewardsContainer.innerHTML = '<div class="text-center text-gray-500 text-sm py-2">Aucune récompense disponible.</div>';
-                } else {
-                    rewards.forEach((reward, idx) => {
-                        // LOGIQUE INTELLIGENTE DE SEUIL
-                        // Priorité 1: Le seuil défini explicitement dans l'admin (reward.threshold)
-                        // Priorité 2: Le parsing du texte
-                        // Priorité 3: Défaut 10
-
-                        let threshold = reward.threshold || 10;
-
-                        // Si le threshold dans l'objet est le défaut (10) et qu'on trouve un autre chiffre dans le texte, on peut l'utiliser
-                        // Mais l'admin prévaut normalement. On va dire que si reward.threshold est défini, c'est lui le chef.
-                        // Cependant, pour la compatibilité avec l'ancien système "texte seul", on checke :
-
-                        if (!reward.threshold) {
-                            const cleanDesc = reward.description || '';
-                            const match = cleanDesc.match(/(\d+)\s*(c|p|k|commande|point)/i);
-                            if (match && match[1]) threshold = parseInt(match[1]);
-                            else if (cleanDesc.includes('10')) threshold = 10;
-                        }
-
-                        // Info: pour l'affichage visuel maxPoints est toujours 10, 
-                        // mais un cadeau peut nécessiter 20 points (il faudra 2 tours de carte fidélité ?)
-                        // Pour l'instant on assume que tout est sur 10 max pour l'affichage bar.
-
-                        const isUnlocked = currentPoints >= threshold;
-
-                        const card = document.createElement('div');
-                        card.className = `p-4 rounded-xl border flex items-center gap-4 transition-all ${isUnlocked
-                            ? 'bg-gradient-to-r from-amber-500/10 to-orange-500/10 border-amber-500/50 cursor-pointer hover:bg-amber-500/20'
-                            : 'bg-white/5 border-white/5 opacity-70'
-                            }`;
-
-                        card.onclick = () => {
-                            if (isUnlocked) window.selectReward(idx);
-                        };
-
-                        card.innerHTML = `
-                            <div class="w-12 h-12 rounded-full flex items-center justify-center shrink-0 ${isUnlocked ? 'bg-amber-500 text-white shadow-lg' : 'bg-white/10 text-gray-500'
-                            }">
-                                <div class="flex flex-col items-center justify-center leading-none">
-                                    <i class="fas fa-gift text-lg mb-0.5"></i>
-                                    <span class="text-[10px] font-bold">${threshold}</span>
-                                </div>
-                            </div>
-                            <div class="flex-1">
-                                <div class="font-bold text-white text-sm">${reward.description || 'Récompense Mystère'}</div>
-                                <div class="text-xs ${isUnlocked ? 'text-amber-400' : 'text-gray-500'}">
-                                    ${isUnlocked ? '<i class="fas fa-check-circle mr-1"></i>Débloqué !' : `<i class="fas fa-lock mr-1"></i>Encore ${Math.max(0, threshold - currentPoints)} commandes`}
-                                </div>
-                            </div>
-                            <div class="${isUnlocked ? 'text-amber-500' : 'text-gray-600'}">
-                                <i class="fas ${isUnlocked ? 'fa-unlock' : 'fa-chevron-right'}"></i>
-                            </div>
-                        `;
-                        rewardsContainer.appendChild(card);
-                    });
-                }
-            }
-        }
-
-        window.openLoyaltyModal = function () {
-            // Open animation
-            const overlay = document.getElementById('loyalty-modal-overlay');
-            const sheet = document.getElementById('loyalty-sheet');
-            const userBadge = document.getElementById('loyalty-username-badge');
-
-            // TELEGRAM USER IDENTIFICATION
-            if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initDataUnsafe && window.Telegram.WebApp.initDataUnsafe.user) {
-                const user = window.Telegram.WebApp.initDataUnsafe.user;
-                // Prefer username, fallback to first name
-                const handle = user.username ? `@${user.username}` : user.first_name;
-                if (userBadge) {
-                    userBadge.textContent = handle;
-                    userBadge.classList.remove('hidden');
-                }
-            } else {
-                if (userBadge) userBadge.classList.add('hidden');
-            }
-
-            overlay.classList.remove('hidden');
-            setTimeout(() => {
-                overlay.classList.remove('opacity-0');
-                sheet.classList.remove('translate-y-full');
-            }, 10);
-
-            // Update UI with current data
-            // Ensure we have data
-            if (!window.userLoyaltyData) {
-                window.userLoyaltyData = { points: 0, rewards: [] };
-            }
-            updateLoyaltyUI(window.userLoyaltyData.points, window.userLoyaltyData.rewards || []);
-        };
-
-        window.closeLoyaltyModal = function () {
-            const overlay = document.getElementById('loyalty-modal-overlay');
-            const sheet = document.getElementById('loyalty-sheet');
-
-            overlay.classList.add('opacity-0');
-            sheet.classList.add('translate-y-full');
-
-            setTimeout(() => {
-                overlay.classList.add('hidden');
-            }, 300);
-        };
-
-        window.selectReward = async function (rewardIndex) {
-            if (!confirm('Voulez-vous utiliser vos 10 points pour ce cadeau ?')) return;
-
-            // Call redeem
-            await window.redeemReward(rewardIndex);
-        }
-
-        // Ensuring userLoyaltyData is available globally
-        window.userLoyaltyData = { points: 0, rewards: [] };
 
         // CONTACT MODAL FUNCTIONS
         window.openContactModal = function () {
@@ -3872,70 +2961,7 @@
             }, 300);
         };
 
-        window.redeemReward = async function () {
-            if (userLoyaltyData.points < 5) return;
 
-            if (!window.Telegram || !window.Telegram.WebApp || !window.Telegram.WebApp.initData) {
-                alert('Disponible uniquement dans Telegram');
-                return;
-            }
-
-            try {
-                const res = await fetch('/api/loyalty/redeem', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'x-telegram-init-data': window.Telegram.WebApp.initData
-                    }
-                });
-                const json = await res.json();
-
-                if (json.success) {
-                    userLoyaltyData.points = json.points;
-                    if (json.reward) {
-                        // Add new reward to local list
-                        if (!userLoyaltyData.rewards) userLoyaltyData.rewards = [];
-                        userLoyaltyData.rewards.push({ code: json.reward, date: new Date().toISOString(), used: false });
-                    }
-                    updateLoyaltyUI(userLoyaltyData.points, userLoyaltyData.rewards);
-
-                    // Show success message
-                    if (json.reward) {
-                        alert(`🎉 Félicitations ! Votre code cadeau : ${json.reward}\n\nCopiez-le et utilisez-le lors de votre prochaine commande !`);
-                    }
-                } else {
-                    alert(json.message || 'Erreur lors de la récupération du cadeau');
-                }
-            } catch (e) {
-                console.error('Redeem error:', e);
-                alert('Erreur de connexion');
-            }
-        };
-
-        window.copyReward = function (code) {
-            navigator.clipboard.writeText(code).then(() => {
-                alert('✅ Code copié : ' + code);
-            }).catch(() => {
-                alert('Code : ' + code);
-            });
-        };
-
-        // Initialize loyalty on page load (ONLY if in Telegram)
-        if (window.Telegram && window.Telegram.WebApp && window.Telegram.WebApp.initData) {
-            window.Telegram.WebApp.ready();
-            window.Telegram.WebApp.expand();
-
-            // Show loyalty button ONLY for Telegram users
-            const loyaltyNavBtn = document.getElementById('nav-loyalty-btn');
-            if (loyaltyNavBtn) {
-                loyaltyNavBtn.classList.remove('hidden');
-            }
-
-            // Initialize loyalty with delay
-            setTimeout(() => initLoyalty(), 1000);
-        } else {
-            console.log('[LOYALTY] Not in Telegram WebApp - Loyalty disabled');
-        }
 
         // --- SCROLL LOCK HELPER ---
         function toggleBodyScroll(lock) {
@@ -3948,7 +2974,7 @@
 
         document.addEventListener('click', function (e) { const target = e.target.closest('.ripple-effect'); if (target) { const rect = target.getBoundingClientRect(); const ripple = document.createElement('span'); ripple.className = 'ripple-span'; ripple.style.width = ripple.style.height = Math.max(rect.width, rect.height) + 'px'; ripple.style.left = e.clientX - rect.left - rect.width / 2 + 'px'; ripple.style.top = e.clientY - rect.top - rect.height / 2 + 'px'; target.appendChild(ripple); setTimeout(() => ripple.remove(), 600); } });
 
-        // REMOVED: window.addEventListener('load') for loyalty - now handled above for Telegram only
+
     </script>
 </body>
 

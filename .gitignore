@@ -46,3 +46,8 @@ JefeCali_Obsidian/
 # Specific Local Files
 modifieur.html
 uploads/
+
+# Ignored Configs & Agents
+.agent/
+nginx_fullterps.conf
+ecosystem.config.js

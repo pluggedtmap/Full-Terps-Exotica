@@ -3,6 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
+    <meta name="robots" content="noindex, nofollow">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Full Terps Exotica</title>
     <script src="https://cdn.tailwindcss.com"></script>
@@ -127,7 +128,7 @@
             <div class="relative z-10">
                 <div
                     class="w-28 h-28 rounded-full flex items-center justify-center mx-auto mb-6 p-1 border border-white/10 bg-black/50 backdrop-blur-md shadow-lg overflow-hidden ring-1 ring-white/5">
-                    <img src="uploads/full_terps_exotica_logo.png"
+                    <img src="uploads/banner_home.jpg"
                         class="w-full h-full object-cover transform transition-transform duration-700 group-hover:scale-110">
                 </div>
 
@@ -175,9 +176,7 @@
                 <button id="nav-clients" class="nav-tab flex items-center gap-2" onclick="showPage('page-clients')">
                     <i class="fas fa-chart-line"></i><span class="hidden sm:inline">Stats</span>
                 </button>
-                <button id="nav-loyalty" class="nav-tab flex items-center gap-2" onclick="showPage('page-loyalty')">
-                    <i class="fas fa-gift"></i><span class="hidden sm:inline">Fidélité</span>
-                </button>
+
                 <button id="nav-produits" class="nav-tab flex items-center gap-2" onclick="showPage('page-produits')">
                     <i class="fas fa-cubes"></i><span class="hidden sm:inline">Produits</span>
                 </button>
@@ -345,15 +344,7 @@
                                 <div id="kpi-avg-order" class="text-xl font-black text-cyan-400">0€</div>
                             </div>
                         </div>
-                        <div class="flex items-center gap-3">
-                            <div class="w-10 h-10 rounded-lg bg-pink-500/20 flex items-center justify-center">
-                                <i class="fas fa-users text-pink-400"></i>
-                            </div>
-                            <div>
-                                <div class="text-xs text-gray-400 uppercase font-bold">Clients Fidélité</div>
-                                <div id="kpi-loyalty-users" class="text-xl font-black text-pink-400">0</div>
-                            </div>
-                        </div>
+
                         <button onclick="refreshStats()"
                             class="bg-white/5 hover:bg-white/10 border border-white/10 px-4 py-2 rounded-lg text-sm font-bold transition flex items-center gap-2">
                             <i class="fas fa-sync-alt"></i> Actualiser
@@ -362,80 +353,7 @@
                 </div>
             </section>
 
-            <!-- PAGE LOYALTY (NEW) -->
-            <section id="page-loyalty" class="page-section hidden">
-                <!-- Loyalty Settings Panel -->
-                <div class="glass-panel p-4 md:p-6 rounded-2xl mb-6 border border-amber-500/20">
-                    <h3 class="text-lg font-bold text-white mb-4 flex items-center gap-2">
-                        <i class="fas fa-cog text-amber-500"></i> Paramètres de Fidélité
-                    </h3>
 
-                    <div class="grid grid-cols-1 gap-4">
-                        <!-- Current Config Display -->
-                        <div class="p-3 bg-amber-500/10 border border-amber-500/20 rounded-lg flex items-center gap-3">
-                            <i class="fas fa-lightbulb text-amber-500 text-xl"></i>
-                            <div class="text-sm">
-                                <span class="text-white font-bold">Système simplifié :</span>
-                                <span class="text-gray-300 ml-2">10 commandes = 1 cadeau au choix</span>
-                            </div>
-                        </div>
-
-                        <!-- Rewards List Management -->
-                        <div class="bg-black/30 p-4 rounded-xl border border-white/5">
-                            <div class="flex justify-between items-center mb-3">
-                                <label class="text-xs text-gray-400 uppercase font-bold">
-                                    <i class="fas fa-gifts text-amber-500 mr-1"></i> Récompenses Configurables
-                                </label>
-                                <button onclick="addReward()"
-                                    class="px-3 py-1 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 rounded-lg text-xs font-bold transition border border-amber-500/30">
-                                    <i class="fas fa-plus mr-1"></i> Ajouter
-                                </button>
-                            </div>
-
-                            <div id="rewards-list" class="space-y-2 mb-3 max-h-96 overflow-y-auto">
-                                <!-- Rewards will be added here dynamically -->
-                            </div>
-
-                            <p class="text-xs text-gray-500 mt-2">
-                                <i class="fas fa-info-circle"></i> Maximum 10 récompenses. Elles s'afficheront sur la
-                                page fidélité client.
-                            </p>
-                        </div>
-
-                        <!-- Save Button -->
-                        <button onclick="saveLoyaltySettings()"
-                            class="w-full px-4 py-3 bg-amber-500/20 hover:bg-amber-500/30 text-amber-400 rounded-lg font-bold transition border border-amber-500/30">
-                            <i class="fas fa-save mr-2"></i> Sauvegarder Toute la Configuration
-                        </button>
-                    </div>
-                </div>
-
-                <!-- Users List -->
-                <div class="glass-panel p-4 md:p-6 rounded-2xl relative overflow-hidden">
-                    <div class="flex justify-between items-center mb-4">
-                        <div>
-                            <h2 class="text-xl md:text-2xl font-bold text-white">Clients Fidèles</h2>
-                            <p class="text-gray-400 text-sm">Gestion des points clients</p>
-                        </div>
-                        <button onclick="loadLoyaltyUsers()"
-                            class="text-[#ef4444] hover:text-white bg-red-500/10 px-3 py-2 rounded-lg border border-red-500/20">
-                            <i class="fas fa-sync-alt"></i>
-                        </button>
-                    </div>
-
-                    <!-- Search Bar -->
-                    <div class="mb-4">
-                        <div class="relative">
-                            <input type="text" id="loyalty-search" placeholder="🔍 Rechercher par ID Telegram..."
-                                oninput="filterLoyaltyUsers()"
-                                class="w-full bg-black/30 border border-white/10 rounded-xl px-4 py-3 pl-10 text-white placeholder-gray-500 focus:border-amber-500/50 outline-none transition">
-                            <i class="fas fa-search absolute left-3 top-1/2 -translate-y-1/2 text-gray-500"></i>
-                        </div>
-                    </div>
-
-                    <div id="loyalty-list" class="space-y-4"></div>
-                </div>
-            </section>
 
             <!-- PAGE PRODUITS -->
             <section id="page-produits" class="page-section hidden">
@@ -504,7 +422,16 @@
                                 <div>
                                     <label class="block text-xs font-bold text-gray-500 uppercase mb-2">Vidéo Hero
                                         (URL)</label>
-                                    <input type="text" id="hero-image" class="w-full input-dark rounded-lg px-3 py-3">
+                                    <div class="relative w-full">
+                                        <input type="text" id="hero-image"
+                                            class="w-full input-dark rounded-lg px-3 py-3 pr-10"
+                                            placeholder="URL Image..." oninput="convertGithubLink(this)">
+                                        <label
+                                            class="absolute right-0 top-0 h-full w-10 flex items-center justify-center cursor-pointer text-gray-400 hover:text-white">
+                                            <i class="fas fa-cloud-upload-alt"></i>
+                                            <input type="file" class="hidden" onchange="uploadAsset(this)">
+                                        </label>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -872,9 +799,7 @@
                 const ordersRes = await fetch('/api/orders?t=' + Date.now(), { headers: { 'Authorization': adminToken } });
                 const ordersJson = await ordersRes.json();
 
-                // Fetch loyalty users
-                const usersRes = await fetch('/api/clients?t=' + Date.now(), { headers: { 'Authorization': adminToken } });
-                const usersJson = await usersRes.json();
+
 
                 const orders = ordersJson.data || [];
                 const now = new Date();
@@ -951,8 +876,7 @@
                 const avgOrder = totalOrders > 0 ? totalRevenue / totalOrders : 0;
                 if (el('kpi-avg-order')) el('kpi-avg-order').textContent = formatCurrency(avgOrder);
 
-                const loyaltyCount = usersJson.data ? usersJson.data.length : 0;
-                if (el('kpi-loyalty-users')) el('kpi-loyalty-users').textContent = loyaltyCount;
+
 
                 // Top Products
                 if (topProductsList) {
@@ -1008,236 +932,7 @@
         }
 
 
-        async function loadLoyaltyUsers() {
-            const list = $('#loyalty-list');
-            if (list) list.innerHTML = '<div class="text-center py-10 opacity-50"><i class="fas fa-spinner fa-spin text-2xl"></i></div>';
 
-            try {
-                const res = await fetch('/api/clients?t=' + Date.now(), { headers: { 'Authorization': adminToken } });
-                const json = await res.json();
-                console.log("Admin Clients Data:", json); // DEBUG LOG
-
-                if (list) {
-                    list.innerHTML = '';
-                    if (!json.data || json.data.length === 0) {
-                        list.innerHTML = '<div class="text-gray-500 text-center py-10">Aucun utilisateur Telegram enregistré.</div>';
-                    } else {
-                        json.data.forEach(c => {
-                            const el = document.createElement('div');
-                            el.className = 'glass-panel p-4 rounded-xl border border-white/5 flex flex-col gap-3';
-                            el.setAttribute('data-user-id', c.id); // For search
-                            const safeId = c.username || c.first_name || c.id;
-
-                            // Visual Points: 1 Row of 10
-                            let pointsHtml = '<div class="flex flex-col gap-1 mt-2 bg-black/20 p-2 rounded-lg border border-white/5">';
-                            // Row 1
-                            pointsHtml += '<div class="flex gap-1 justify-center">';
-                            for (let i = 1; i <= 10; i++) {
-                                const active = i <= c.points;
-                                const color = active ? 'bg-[#ef4444] shadow-[0_0_8px_rgba(239,68,68,0.6)]' : 'bg-white/5 border border-white/10';
-                                pointsHtml += `<div class="flex-1 w-6 h-2 rounded-full ${color} transition-all duration-300"></div>`;
-                            }
-                            pointsHtml += '</div></div>';
-
-                            el.innerHTML = `
-                                <div class="flex flex-col sm:flex-row justify-between items-start gap-2 sm:gap-0">
-                                    <div class="flex items-center gap-3">
-                                        <div class="w-10 h-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-400 border border-blue-500/20 flex-shrink-0">
-                                            <i class="fab fa-telegram text-xl"></i>
-                                        </div>
-                                        <div class="min-w-0">
-                                            <div class="text-gray-400 text-xs font-mono mb-0.5">ID SECURISE</div>
-                                            <div class="font-bold text-white tracking-wider font-mono bg-white/5 px-2 py-0.5 rounded border border-white/10 text-sm truncate max-w-[150px] sm:max-w-none">${safeId}</div>
-                                        </div>
-                                    </div>
-                                    <div class="text-right self-end sm:self-auto">
-                                        <div class="text-3xl font-black ${c.points >= 5 ? 'text-amber-500 drop-shadow-[0_0_10px_rgba(245,158,11,0.5)]' : 'text-gray-500'}">${c.points}</div>
-                                        <div class="text-[9px] text-gray-500 uppercase tracking-widest font-bold">Points</div>
-                                    </div>
-                                </div>
-                                
-                                ${pointsHtml}
-                                
-                                <div class="flex justify-between items-center text-xs text-gray-400 px-1">
-                                    <span>Total Dépensé:</span>
-                                    <span class="text-green-400 font-bold font-mono">${Number(c.totalSpent || 0).toFixed(2)}€</span>
-                                </div>
-
-                                <div class="grid grid-cols-2 gap-2 mt-2">
-                                     <div class="bg-white/5 rounded-lg p-2 flex items-center justify-between border border-white/5">
-                                         <span class="text-[10px] text-gray-500 uppercase font-bold">Ajuster</span>
-                                         <div class="flex gap-1">
-                                            <button onclick="modifyPoints('${c.id}', 'add', -1)" class="w-8 h-8 rounded bg-black/40 hover:bg-white/10 flex items-center justify-center text-white font-bold transition border border-white/5 active:scale-95">-</button>
-                                            <button onclick="modifyPoints('${c.id}', 'add', 1)" class="w-8 h-8 rounded bg-black/40 hover:bg-white/10 flex items-center justify-center text-white font-bold transition border border-white/5 active:scale-95">+</button>
-                                         </div>
-                                     </div>
-                                     <button onclick="modifyPoints('${c.id}', 'reset')" class="bg-green-500/10 hover:bg-green-500/20 text-green-400 border border-green-500/20 rounded-lg p-2 flex flex-col items-center justify-center transition group active:scale-95">
-                                        <i class="fas fa-gift text-lg mb-1 group-hover:scale-110 transition-transform"></i>
-                                        <span class="text-[9px] font-bold uppercase">Valider</span>
-                                     </button>
-                                </div>
-                                
-                                <div class="flex gap-2 mt-2">
-                                    <button onclick="modifyPoints('${c.id}', 'set', 0)" class="flex-1 text-center py-2 text-[10px] text-orange-500/70 hover:text-orange-500 hover:bg-orange-500/10 rounded transition border border-transparent hover:border-orange-500/20 active:scale-95">
-                                        <i class="fas fa-undo mr-1"></i> Remettre à 0
-                                    </button>
-                                    <button onclick="deleteClient('${c.id}')" class="flex-1 text-center py-2 text-[10px] text-red-500/70 hover:text-red-500 hover:bg-red-500/10 rounded transition border border-transparent hover:border-red-500/20 active:scale-95">
-                                        <i class="fas fa-trash-alt mr-1"></i> Supprimer
-                                    </button>
-                                </div>
-                            `;
-                            list.appendChild(el);
-                        });
-                    }
-                }
-            } catch (e) { if (list) list.innerHTML = '<div class="text-red-500 text-center">Erreur de chargement</div>'; }
-        }
-
-        async function modifyPoints(userId, action, value) {
-            if (!confirm("Confirmer cette action ?")) return;
-            try {
-                await fetch('/api/clients/points', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': adminToken },
-                    body: JSON.stringify({ userId, action, value })
-                });
-                loadLoyaltyUsers(); // Refresh
-            } catch (e) { alert("Erreur modification points"); }
-        }
-
-        async function deleteClient(userId) {
-            if (!confirm("⚠️ Supprimer définitivement ce client de la fidélité ?\n\nCette action est irréversible !")) return;
-            try {
-                const res = await fetch('/api/clients/delete', {
-                    method: 'DELETE',
-                    headers: { 'Content-Type': 'application/json', 'Authorization': adminToken },
-                    body: JSON.stringify({ userId })
-                });
-                const json = await res.json();
-                if (json.success) {
-                    loadLoyaltyUsers(); // Refresh
-                } else {
-                    alert("Erreur: " + (json.message || "Suppression échouée"));
-                }
-            } catch (e) { alert("Erreur suppression client"); }
-        }
-
-        // REWARDS MANAGEMENT
-        let loyaltyRewards = [];
-
-        function addReward() {
-            if (loyaltyRewards.length >= 10) {
-                alert('⚠️ Maximum 10 récompenses atteint');
-                return;
-            }
-
-            loyaltyRewards.push({
-                id: Date.now(),
-                points: 5,
-                description: ''
-            });
-
-            renderRewardsList();
-        }
-
-        function removeReward(id) {
-            loyaltyRewards = loyaltyRewards.filter(r => r.id !== id);
-            renderRewardsList();
-        }
-
-        function renderRewardsList() {
-            const container = $('#rewards-list');
-            if (!container) return;
-
-            container.innerHTML = '';
-
-            if (loyaltyRewards.length === 0) {
-                container.innerHTML = '<div class="text-gray-500 text-sm text-center py-4">Aucun cadeau configuré. Cliquez sur "Ajouter" pour créer vos récompenses.</div>';
-                return;
-            }
-
-            loyaltyRewards.forEach((reward, index) => {
-                const el = document.createElement('div');
-                el.className = 'flex gap-2 items-center bg-black/30 p-3 rounded-lg border border-white/5';
-                el.innerHTML = `
-                    <div class="flex-1">
-                        <input type="text" 
-                            value="${reward.description}" 
-                            placeholder="Ex: Livraison gratuite"
-                            oninput="loyaltyRewards[${index}].description = this.value"
-                            class="w-full bg-white/5 border border-white/10 rounded px-3 py-2 text-white text-sm focus:border-amber-500/50 outline-none placeholder-gray-600">
-                    </div>
-                    <button onclick="removeReward(${reward.id})" 
-                        class="flex-shrink-0 w-8 h-8 bg-red-500/10 hover:bg-red-500/20 text-red-400 rounded flex items-center justify-center transition border border-red-500/20">
-                        <i class="fas fa-trash text-xs"></i>
-                    </button>
-                `;
-                container.appendChild(el);
-            });
-        }
-
-        function saveLoyaltySettings() {
-            const loyaltyConfig = {
-                maxPoints: 20,
-                rewards: loyaltyRewards
-            };
-
-            // Save to backend API
-            fetch('/api/loyalty/config', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': adminToken
-                },
-                body: JSON.stringify(loyaltyConfig)
-            })
-                .then(res => res.json())
-                .then(json => {
-                    if (json.success) {
-                        alert(`✅ Configuration sauvegardée!\n${loyaltyRewards.length} récompense(s) enregistrée(s).`);
-                    }
-                })
-                .catch(e => alert('❌ Erreur de sauvegarde'));
-        }
-
-        async function loadLoyaltySettings() {
-            try {
-                const res = await fetch('/api/loyalty/config');
-                const json = await res.json();
-
-                if (json.success && json.config) {
-                    const config = json.config;
-                    loyaltyRewards = Array.isArray(config.rewards) ? config.rewards : [];
-                    renderRewardsList();
-                }
-            } catch (e) {
-                console.error('Failed to load loyalty config:', e);
-            }
-        }
-
-        // Load loyalty settings when page shows loyalty tab
-        const originalShowPage = window.showPage;
-        window.showPage = (id) => {
-            originalShowPage(id);
-            if (id === 'page-loyalty') {
-                loadLoyaltySettings();
-            }
-        };
-
-        // Filter/Search loyalty users
-        function filterLoyaltyUsers() {
-            const searchTerm = $('#loyalty-search').value.toLowerCase().trim();
-            const allCards = document.querySelectorAll('#loyalty-list > div');
-
-            allCards.forEach(card => {
-                const userId = card.getAttribute('data-user-id') || '';
-                if (userId.toLowerCase().includes(searchTerm)) {
-                    card.style.display = '';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
 
         // PRODUCTS UI (Updated Grid)
         async function loadProducts() {
@@ -1501,101 +1196,7 @@
         window.openPreview = () => { $('#preview-iframe').src = 'index.html'; $('#preview-modal').classList.remove('hidden'); }
         window.closePreview = () => { $('#preview-modal').classList.add('hidden'); $('#preview-iframe').src = ''; }
 
-        // --- LOYALTY REWARDS MANAGEMENT ---
 
-        function renderRewardsList() {
-            const list = document.getElementById('rewards-list');
-            if (!list) return;
-
-            list.innerHTML = '';
-
-            // Ensure structure
-            if (!appSettings.loyalty) appSettings.loyalty = {};
-            if (!appSettings.loyalty.rewards) appSettings.loyalty.rewards = [];
-
-            if (appSettings.loyalty.rewards.length === 0) {
-                list.innerHTML = '<div class="text-gray-500 text-center py-4 text-xs italic">Aucune récompense configurée.</div>';
-                return;
-            }
-
-            appSettings.loyalty.rewards.forEach((r, idx) => {
-                const el = document.createElement('div');
-                el.className = 'bg-white/5 p-3 rounded-lg border border-white/5 flex gap-2 items-center';
-                // Input Text + Input Number + Delete
-                el.innerHTML = `
-                    <div class="flex-1">
-                        <input type="text" 
-                            class="w-full bg-transparent border-none text-white text-sm focus:ring-0 placeholder-gray-600 font-bold" 
-                            placeholder="Nom du cadeau..."
-                            value="${r.description || ''}"
-                            onchange="updateReward(${idx}, 'description', this.value)"
-                        >
-                    </div>
-                    <div class="w-20 border-l border-white/10 pl-2">
-                        <input type="number" 
-                            class="w-full bg-transparent border-none text-amber-500 text-sm focus:ring-0 font-mono text-center font-bold" 
-                            placeholder="Pts"
-                            value="${r.threshold || 10}"
-                            min="1" max="100"
-                            onchange="updateReward(${idx}, 'threshold', parseInt(this.value))"
-                            title="Points requis"
-                        >
-                    </div>
-                    <button onclick="deleteReward(${idx})" class="text-red-500 hover:text-red-400 p-2">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                `;
-                list.appendChild(el);
-            });
-        }
-
-        window.addReward = () => {
-            if (!appSettings.loyalty) appSettings.loyalty = {};
-            if (!appSettings.loyalty.rewards) appSettings.loyalty.rewards = [];
-
-            if (appSettings.loyalty.rewards.length >= 10) {
-                alert("Maximum 10 récompenses atteint.");
-                return;
-            }
-
-            appSettings.loyalty.rewards.push({ description: "", threshold: 10 });
-            renderRewardsList();
-        };
-
-        window.deleteReward = (idx) => {
-            if (!confirm("Supprimer cette récompense ?")) return;
-            appSettings.loyalty.rewards.splice(idx, 1);
-            renderRewardsList();
-        };
-
-        window.updateReward = (idx, field, value) => {
-            if (appSettings.loyalty.rewards[idx]) {
-                appSettings.loyalty.rewards[idx][field] = value;
-            }
-        };
-
-        window.saveLoyaltySettings = async () => {
-            try {
-                // Clean empty rewards
-                if (appSettings.loyalty && appSettings.loyalty.rewards) {
-                    appSettings.loyalty.rewards = appSettings.loyalty.rewards.filter(r => r.description && r.description.trim() !== "");
-                }
-
-                await saveSettings(true); // Save global appSettings
-                alert("Configuration fidélité sauvegardée !");
-                renderRewardsList(); // Re-render to show clean state
-            } catch (e) {
-                alert("Erreur lors de la sauvegarde.");
-                console.error(e);
-            }
-        };
-
-        // Hook into existing renderSettingsUI to init rewards
-        const originalRenderSettings = renderSettingsUI;
-        renderSettingsUI = function () {
-            originalRenderSettings();
-            renderRewardsList();
-        };
 
     </script>
 </body>

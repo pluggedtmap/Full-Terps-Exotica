@@ -24,7 +24,18 @@ const GH_BRANCH = 'main';
 const GH_UPLOAD_DIR = 'upload';
 
 // Multer for memory (GitHub Uploads)
-const uploadMemory = multer({ storage: multer.memoryStorage() });
+const uploadMemory = multer({
+    storage: multer.memoryStorage(),
+    limits: { fileSize: 100 * 1024 * 1024 }, // 100MB
+    fileFilter: (req, file, cb) => {
+        const allowedTypes = /jpeg|jpg|png|gif|webp|mp4|webm|mov/;
+        const ext = path.extname(file.originalname).toLowerCase();
+        if (allowedTypes.test(ext)) {
+            return cb(null, true);
+        }
+        cb(new Error('Format non autorisé (Images ou Vidéos uniquement)'));
+    }
+});
 const https = require('https'); // For GitHub API calls
 
 // --- SECURITE & MIDDLEWARE ---
@@ -89,9 +100,18 @@ const upload = multer({
 // Rate Limiting
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 20, // Increased for admin usage comfort
-    message: { success: false, message: "Trop de tentatives." }
+    max: 5, // Strict limit: 5 attempts per 15 mins
+    message: { success: false, message: "Trop de tentatives. Réessayez dans 15 minutes." },
+    standardHeaders: true,
+    legacyHeaders: false,
 });
+
+// --- SECURITE & MIDDLEWARE ---
+app.use(helmet({
+    contentSecurityPolicy: false, // Disabled for now as it breaks inline scripts/styles often used here
+    crossOriginEmbedderPolicy: false,
+    crossOriginResourcePolicy: { policy: "cross-origin" } // Allow resources to be loaded from other origins (like GitHub)
+}));
 
 // --- CUSTOM JSON DATABASE ENGINE ---
 // --- REQUEST LOGGING ---
@@ -191,7 +211,7 @@ function loadData() {
     if (!data.admin) data.admin = {};
     if (!data.admin.passwordHash) {
         const salt = bcrypt.genSaltSync(10);
-        data.admin.passwordHash = bcrypt.hashSync('snoopclouds', salt);
+        data.admin.passwordHash = bcrypt.hashSync('terpz420', salt);
     }
     if (!data.settings) data.settings = {};
     if (!data.settings.categories) data.settings.categories = ['WEED', 'HASH', 'VAPE', 'AUTRE'];
@@ -324,144 +344,7 @@ app.delete('/api/products/:id', verifyAdmin, (req, res) => {
     res.json({ success: true });
 });
 
-// --- ROUTES API LOYALTY & ORDERS ---
 
-// Get Loyalty Info
-app.get('/api/loyalty', (req, res) => {
-    const initData = req.headers['x-telegram-init-data'];
-    const pseudoHeader = req.headers['x-pseudo'];
-    console.log(`[LOYALTY CHECK] InitData: ${initData ? 'YES' : 'NO'}, Pseudo: ${pseudoHeader}`);
-
-    let userId = null;
-
-    if (initData) {
-        const user = verifyTelegramWebAppData(initData);
-        if (user) userId = user.id;
-    }
-
-    if (!userId) {
-        // Fallback for Web Users
-        const pseudo = req.headers['x-pseudo'];
-        if (pseudo) {
-            // Reconstruct the synthetic ID
-            const safePseudo = pseudo.trim();
-            userId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
-            console.log(`[LOYALTY] Auth via Pseudo: ${userId}`);
-        }
-    }
-
-    if (!userId) return res.status(401).json({ success: false, message: "Non authentifié" });
-
-    const db = loadData();
-
-    // CRITICAL FIX: Check BOTH Telegram ID and Pseudo ID
-    // User might have points under pseudo but authenticating via Telegram (or vice versa)
-    let finalPoints = 0;
-    let finalRewards = [];
-
-    // Check current userId (could be Telegram or Pseudo)
-    if (db.users[userId]) {
-        finalPoints = db.users[userId].points || 0;
-        finalRewards = db.users[userId].rewards || [];
-        console.log(`[LOYALTY] Found ${finalPoints} points under ${userId}`);
-    }
-
-    // ALSO check the Pseudo ID if we have the header (even if Telegram auth succeeded)
-    if (pseudoHeader) {
-        const safePseudo = pseudoHeader.trim();
-        const pseudoId = `pseudo_${safePseudo.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
-
-        // If this is a DIFFERENT ID than what we already checked
-        if (pseudoId !== userId && db.users[pseudoId]) {
-            const pseudoPoints = db.users[pseudoId].points || 0;
-            console.log(`[LOYALTY] ALSO found ${pseudoPoints} points under ${pseudoId}`);
-
-            // Use MAX to avoid double-counting but ensure we show the real score
-            if (pseudoPoints > finalPoints) {
-                finalPoints = pseudoPoints;
-                finalRewards = db.users[pseudoId].rewards || [];
-                console.log(`[LOYALTY] Using Pseudo account points instead (higher)`);
-            }
-        }
-    }
-
-    // REFERRAL HANDLING
-    const referralCode = req.headers['x-referral'];
-    if (referralCode && userId) {
-        // Construct referrer ID (assuming referralCode is pseudo/username)
-        // referralCode comes from 'ref_username' so it is the username
-        const referrerId = `pseudo_${referralCode.toLowerCase().replace(/[^a-z0-9]/g, '')}`;
-
-        // Ensure user exists in DB to save referral data
-        if (!db.users[userId]) {
-            db.users[userId] = { points: 0, rewards: [], first_name: "New User", joinedAt: new Date().toISOString() };
-        }
-
-        // Only link if:
-        // 1. Not self-referral
-        // 2. User has no referrer yet
-        // 3. Referrer exists in DB
-        if (referrerId !== userId && !db.users[userId].referredBy) {
-            if (db.users[referrerId]) {
-                db.users[userId].referredBy = referrerId;
-                console.log(`[REFERRAL] User ${userId} linked to referrer ${referrerId}`);
-                saveData(db);
-                // Notification (Log)
-                console.log(`[REFERRAL] Success: ${userId} -> ${referrerId}`);
-            } else {
-                console.log(`[REFERRAL] Referrer ${referrerId} not found`);
-            }
-        }
-    }
-
-    console.log(`[LOYALTY] Final response: ${finalPoints} points`);
-    res.json({ success: true, points: finalPoints, rewards: finalRewards });
-});
-
-// Redeem Reward
-app.post('/api/loyalty/redeem', (req, res) => {
-    const initData = req.headers['x-telegram-init-data'];
-    const user = verifyTelegramWebAppData(initData);
-    if (!user) return res.status(403).json({ success: false });
-
-    const db = loadData();
-    if (!db.users[user.id]) db.users[user.id] = { points: 0, rewards: [] };
-
-    if (db.users[user.id].points >= 5) {
-        db.users[user.id].points -= 5;
-        const code = "REWARD-" + Math.random().toString(36).substring(2, 8).toUpperCase();
-        if (!db.users[user.id].rewards) db.users[user.id].rewards = [];
-        db.users[user.id].rewards.push({ code, date: new Date().toISOString(), used: false });
-        saveData(db);
-        res.json({ success: true, points: db.users[user.id].points, reward: code });
-    } else {
-        res.status(400).json({ success: false, message: "Pas assez de points" });
-    }
-});
-
-// Loyalty Config Management
-app.get('/api/loyalty/config', (req, res) => {
-    const db = loadData();
-    const config = db.settings?.loyaltyConfig || {
-        maxPoints: 10,
-        rewards: []
-    };
-    res.json({ success: true, config });
-});
-
-app.post('/api/loyalty/config', verifyAdmin, (req, res) => {
-    const { rewards } = req.body;
-    const db = loadData();
-
-    if (!db.settings) db.settings = {};
-    db.settings.loyaltyConfig = {
-        maxPoints: 10, // Fixed at 10 points
-        rewards: Array.isArray(rewards) ? rewards.slice(0, 10) : [] // Max 10 rewards
-    };
-
-    saveData(db);
-    res.json({ success: true, config: db.settings.loyaltyConfig });
-});
 
 
 // Orders Update
@@ -505,42 +388,7 @@ app.post('/api/orders', (req, res) => {
         console.log("[DEBUG] Web User Identified. ID:", userId, "Pseudo:", username);
     }
 
-    // LOYALTY POINTS: ONLY for Telegram-authenticated users
-    if (telegramUser) {
-        // Use Telegram username as the key (like @CaptainCalix -> pseudo_captaincalix)
-        const loyaltyKey = telegramUser.username
-            ? `pseudo_${telegramUser.username.toLowerCase().replace(/[^a-z0-9]/g, '')}`
-            : `tg_${telegramUser.id}`;
 
-        if (!db.users[loyaltyKey]) {
-            db.users[loyaltyKey] = {
-                points: 0,
-                rewards: [],
-                totalSpent: 0,
-                username: telegramUser.username ? `@${telegramUser.username}` : null,
-                first_name: telegramUser.first_name || "",
-                joinedAt: new Date().toISOString()
-            };
-        }
-        // Check for Referral Bonus (Condition: First Order)
-        const user = db.users[loyaltyKey];
-        if (user.referredBy && !user.hasOrdered) {
-            const referrerId = user.referredBy;
-            if (db.users[referrerId]) {
-                db.users[referrerId].points = (db.users[referrerId].points || 0) + 1;
-                console.log(`[REFERRAL] +1 point for referrer ${referrerId} (filleul: ${loyaltyKey})`);
-            }
-        }
-
-        // Update User Stats
-        user.points = (user.points || 0) + 1;
-        user.totalSpent = (user.totalSpent || 0) + (orderData.total || 0);
-        user.hasOrdered = true; // Mark as having ordered
-
-        console.log(`[LOYALTY] +1 point for ${loyaltyKey}. Total: ${user.points}`);
-    } else {
-        console.log("[LOYALTY] No points added - user not authenticated via Telegram");
-    }
 
     // STOCK MANAGEMENT: Reduce stock for each item in the order
     if (orderData.items && Array.isArray(orderData.items)) {
@@ -566,7 +414,7 @@ app.post('/api/orders', (req, res) => {
     if (db.orders.length > 200) db.orders.shift(); // Keep last 200
 
     saveData(db);
-    res.json({ success: true, orderId: shortId, internalId: orderData.id, points: telegramUser ? db.users[telegramUser.id].points : 0 });
+    res.json({ success: true, orderId: shortId, internalId: orderData.id });
 });
 
 app.get('/api/orders', verifyAdmin, (req, res) => {
@@ -695,58 +543,7 @@ app.get('/api/github-files', verifyAdmin, (req, res) => {
     request.end();
 });
 
-// --- CLIENTS MANAGEMENT (ADMIN) ---
-app.get('/api/clients', verifyAdmin, (req, res) => {
-    const db = loadData();
-    // Convert users object to array with ID included
-    const clients = Object.entries(db.users || {}).map(([id, data]) => ({
-        id,
-        ...data
-    }));
-    res.json({ success: true, data: clients });
-});
 
-app.post('/api/clients/points', verifyAdmin, (req, res) => {
-    const { userId, action, value } = req.body; // action: 'set', 'add', 'reset'
-    const db = loadData();
-
-    if (!db.users[userId]) return res.json({ success: false, message: "Utilisateur inconnu" });
-
-    if (action === 'reset') {
-        db.users[userId].points = 0;
-        db.users[userId].rewards = []; // Optional: Clear rewards too?
-    } else if (action === 'set') {
-        db.users[userId].points = parseInt(value) || 0;
-    } else if (action === 'add') {
-        db.users[userId].points = (db.users[userId].points || 0) + (parseInt(value) || 0);
-    }
-
-    // Cap points to max 10 for the "2 rows of 10 points" visual logic requested?
-    // User asked for "modifier ou augmenter... pour le nombre de point a gagner '2 rangé de 10 point maximum'"
-    // This implies the max might be 20 now? Or just visual?
-    // Let's assume logic allows going up, visual handles display.
-    if (db.users[userId].points < 0) db.users[userId].points = 0;
-
-    saveData(db);
-    res.json({ success: true, points: db.users[userId].points });
-});
-
-// Delete Loyalty Client
-app.delete('/api/clients/delete', verifyAdmin, (req, res) => {
-    const { userId } = req.body;
-    const db = loadData();
-
-    if (!db.users[userId]) {
-        return res.json({ success: false, message: "Utilisateur non trouvé" });
-    }
-
-    // Delete the user from the loyalty database
-    delete db.users[userId];
-
-    saveData(db);
-    console.log(`[ADMIN] Deleted loyalty user: ${userId}`);
-    res.json({ success: true, message: "Client supprimé" });
-});
 
 app.get('*', (req, res) => {
     if (req.accepts('html')) {
